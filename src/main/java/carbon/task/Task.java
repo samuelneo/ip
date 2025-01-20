@@ -18,6 +18,10 @@ public class Task {
         this.isDone = false;
     }
 
+    public boolean isDone() {
+        return isDone;
+    }
+
     /**
      * Marks the Task as done.
      */
@@ -28,7 +32,7 @@ public class Task {
     /**
      * Marks the Task as not done.
      */
-    public void markAsNotDone() {
+    public void unmarkAsDone() {
         isDone = false;
     }
 
