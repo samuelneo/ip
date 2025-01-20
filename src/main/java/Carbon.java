@@ -1,14 +1,30 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Carbon {
     private static final String horizontalLine = "_".repeat(60);
 
+    private static ArrayList<String> tasks;
+
     /**
-     * Prints the message in between two horizontal lines, with an indentation of 4 spaces.
+     * Prints the message in between two horizontal lines.
+     * The lines are indented by 4 spaces, and the message is indented by 5 spaces.
      */
     private static void printMessage(String message) {
         System.out.println("    " + horizontalLine);
-        System.out.println("    " + message.replace("\n", "\n    "));
+        System.out.println("     " + message.replace("\n", "\n     "));
+        System.out.println("    " + horizontalLine + "\n");
+    }
+
+    /**
+     * Prints the list of tasks in between two horizontal lines.
+     * The lines are indented by 4 spaces, and the tasks are indented by 5 spaces.
+     */
+    private static void printTasks() {
+        System.out.println("    " + horizontalLine);
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.printf("     %d. %s\n", i+1, tasks.get(i));
+        }
         System.out.println("    " + horizontalLine + "\n");
     }
 
@@ -16,13 +32,21 @@ public class Carbon {
      * Processes user commands until they enter "bye".
      */
     private static void inputLoop() {
+        tasks = new ArrayList<>(); // initialise empty task list
         Scanner scanner = new Scanner(System.in);
+
         while (true) {
             String input = scanner.nextLine();
-            if (input.equals("bye")) {
+            switch (input) {
+            case "bye":
                 return;
+            case "list":
+                printTasks();
+                break;
+            default:
+                tasks.add(input);
+                printMessage("added: " + input);
             }
-            printMessage(input);
         }
     }
 
