@@ -1,16 +1,43 @@
-hello
 list
+delete 1
+delete 0
+delete -1
+mark 1
+mark 0
+mark -1
+unmark 1
+unmark 0
+unmark -1
+list
+delete hello
 todo buy pencils
 list
+delete 2
+delete 0
+delete 1
+delete 1
+todo buy markers
+mark 1
+mark 1
+unmark 1
 deadline homework 1 /by Friday
 event project meeting /from Wednesday 1pm /to Wednesday 3pm
 list
 mark 2
 list
-mark 1
-list
-unmark 1
+unmark 2
 list
 list
 list
+todo
+deadline homework 2
+deadline homework 3 /by
+deadline /by 2pm
+event /from 1pm /to 2pm
+event meeting /from /to 5pm
+event meeting /to 2pm
+event meeting /from 5pm
+unrecognised command
+-1
+' OR 1=1; --
 bye

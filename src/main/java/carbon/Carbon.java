@@ -9,6 +9,8 @@ import carbon.task.Todo;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -96,24 +98,22 @@ public class Carbon {
     }
 
     private static void addDeadline(String arg) {
-        String[] args = arg.split(" /by ");
-        if (args.length != 2) {
+        Matcher matcher = Pattern.compile("^(.*\\S.*) /by (.*\\S.*)$").matcher(arg);
+        if (!matcher.find()) {
             throw new InvalidArgumentException(
                     "Deadline commands should be formatted as \"deadline [description] /by [due date/time]\"");
         }
-        Deadline deadline = new Deadline(args[0], args[1]);
+        Deadline deadline = new Deadline(matcher.group(1), matcher.group(2));
         printAndAddTask(deadline);
     }
 
     private static void addEvent(String arg) {
-        String[] args = arg.split(" /from ");
-        // This allows validity to be verified just by checking the length of the duration array
-        String[] duration = (args.length == 2) ? args[1].split(" /to ") : new String[0];
-        if (duration.length != 2) {
+        Matcher matcher = Pattern.compile("^(.*\\S.*) /from (.*\\S.*) /to (.*\\S.*)$").matcher(arg);
+        if (!matcher.find()) {
             throw new InvalidArgumentException(
                     "Event commands should be formatted as \"event [description] /from [start] /to [end]\"");
         }
-        Event event = new Event(args[0], duration[0], duration[1]);
+        Event event = new Event(matcher.group(1), matcher.group(2), matcher.group(3));
         printAndAddTask(event);
     }
 
@@ -133,7 +133,7 @@ public class Carbon {
             String input = scanner.nextLine().trim();
             String[] words = input.split(" ", 2);
             String command = words[0].toLowerCase();
-            String arg = words.length > 1 ? words[1] : "";
+            String arg = (words.length > 1 ? words[1] : "").trim();
 
             try {
                 switch (command) {
