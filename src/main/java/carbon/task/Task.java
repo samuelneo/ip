@@ -19,6 +19,20 @@ public class Task {
     }
 
     /**
+     * Marks the Task as done.
+     */
+    public void markAsDone() {
+        isDone = true;
+    }
+
+    /**
+     * Marks the Task as not done.
+     */
+    public void markAsNotDone() {
+        isDone = false;
+    }
+
+    /**
      * Returns an icon representing the completion status of the Task.
      * This is "X" if the task has been completed,
      * or a space " " if the task has not been completed.

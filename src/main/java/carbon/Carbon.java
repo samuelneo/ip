@@ -4,6 +4,8 @@ import carbon.task.Task;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Carbon {
     private static final String horizontalLine = "_".repeat(60);
@@ -16,9 +18,11 @@ public class Carbon {
      *
      * @param message Message to be printed.
      */
-    private static void printMessage(String message) {
+    private static void printMessage(String... message) {
         System.out.println("    " + horizontalLine);
-        System.out.println("     " + message.replace("\n", "\n     "));
+        for (String s : message) {
+            System.out.println("     " + s.replace("\n", "\n     "));
+        }
         System.out.println("    " + horizontalLine + "\n");
     }
 
@@ -27,12 +31,10 @@ public class Carbon {
      * The lines are indented by 4 spaces, and the tasks are indented by 5 spaces.
      */
     private static void printTasks() {
-        System.out.println("    " + horizontalLine);
-        System.out.println("     Tasks:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.printf("     %d. %s\n", i+1, tasks.get(i));
-        }
-        System.out.println("    " + horizontalLine + "\n");
+        String taskList = IntStream.range(0, tasks.size())
+                .mapToObj(i -> (i+1) + ". " + tasks.get(i).toString())
+                .collect(Collectors.joining("\n"));
+        printMessage("Tasks:", taskList);
     }
 
     /**
@@ -44,13 +46,22 @@ public class Carbon {
 
         while (true) {
             String input = scanner.nextLine();
-            switch (input) {
-            case "bye":
+            String[] words = input.toLowerCase().split(" ");
+            String command = words[0];
+
+            if (command.equals("bye")) {
                 return;
-            case "list":
+            } else if (command.equals("list")) {
                 printTasks();
-                break;
-            default:
+            } else if (command.equals("mark")) {
+                int index = Integer.parseInt(words[1]) - 1;
+                tasks.get(index).markAsDone();
+                printMessage("Marked as done:", tasks.get(index).toString());
+            } else if (command.equals("unmark")) {
+                int index = Integer.parseInt(words[1]) - 1;
+                tasks.get(index).markAsNotDone();
+                printMessage("Marked as not done:", tasks.get(index).toString());
+            } else {
                 tasks.add(new Task(input));
                 printMessage("added: " + input);
             }
