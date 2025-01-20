@@ -1,0 +1,16 @@
+hello
+list
+todo buy pencils
+list
+deadline homework 1 /by Friday
+event project meeting /from Wednesday 1pm /to Wednesday 3pm
+list
+mark 2
+list
+mark 1
+list
+unmark 1
+list
+list
+list
+bye

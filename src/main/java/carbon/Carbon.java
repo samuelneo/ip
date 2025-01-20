@@ -34,6 +34,10 @@ public class Carbon {
      * The lines are indented by 4 spaces, and the tasks are indented by 5 spaces.
      */
     private static void printTasks() {
+        if (tasks.isEmpty()) {
+            printMessage("You don't have any tasks! :)");
+            return;
+        }
         String taskList = IntStream.range(0, tasks.size())
                 .mapToObj(i -> (i+1) + ". " + tasks.get(i).toString())
                 .collect(Collectors.joining("\n"));
@@ -43,7 +47,7 @@ public class Carbon {
     private static void printAndAddTask(Task task) {
         tasks.add(task);
         boolean pluralise = tasks.size() != 1;
-        printMessage("Added: ",
+        printMessage("Added:",
                 "   " + task.toString(),
                 String.format("You now have %d task%s.", tasks.size(), pluralise ? "s" : ""));
     }
