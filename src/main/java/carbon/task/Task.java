@@ -9,7 +9,7 @@ public class Task {
     protected boolean isDone;
 
     /**
-     * Creates an Task with the specified description and a negative completion status.
+     * Creates an Task with the specified description.
      *
      * @param description Description of the Task.
      */
@@ -45,8 +45,7 @@ public class Task {
 
     /**
      * Returns a String representation of the Task.
-     * This includes the completion status icon enclosed in square brackets,
-     * followed by the description of the Task.
+     * This includes the completion status icon, followed by the description of the Task.
      *
      * @return String representation of the Task.
      */
