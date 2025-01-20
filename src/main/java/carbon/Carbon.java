@@ -57,12 +57,16 @@ public class Carbon {
         printMessage("Tasks:", taskList);
     }
 
-    private static void printAndAddTask(Task task) {
-        tasks.add(task);
+    private static void printTask(String precedingMessage, Task task) {
         boolean pluralise = tasks.size() != 1;
-        printMessage("Added:",
+        printMessage(precedingMessage,
                 "   " + task.toString(),
                 String.format("You now have %d task%s.", tasks.size(), pluralise ? "s" : ""));
+    }
+
+    private static void printAndAddTask(Task task) {
+        tasks.add(task);
+        printTask("Added:", task);
     }
 
     private static void markTask(int index) {
@@ -71,7 +75,7 @@ public class Carbon {
                 ? String.format("Task #%d is already done (no changes made).", index+1)
                 : "Marked as done:";
         task.markAsDone();
-        printMessage(message, tasks.get(index).toString());
+        printMessage(message, "   " + tasks.get(index).toString());
     }
 
     private static void unmarkTask(int index) {
@@ -80,7 +84,7 @@ public class Carbon {
                 ? "Marked as not done:"
                 : String.format("Task #%d has not been done (no changes made).", index+1);
         task.unmarkAsDone();
-        printMessage(message, tasks.get(index).toString());
+        printMessage(message, "   " + tasks.get(index).toString());
     }
 
     private static void addTodo(String arg) {
@@ -113,6 +117,11 @@ public class Carbon {
         printAndAddTask(event);
     }
 
+    private static void deleteTask(int index) {
+        Task task = tasks.remove(index);
+        printTask("Deleted the following task:", task);
+    }
+
     /**
      * Processes user commands until they enter "bye".
      */
@@ -137,6 +146,7 @@ public class Carbon {
                     case "todo" -> addTodo(arg);
                     case "deadline" -> addDeadline(arg);
                     case "event" -> addEvent(arg);
+                    case "delete" -> deleteTask(Integer.parseInt(arg) - 1);
                     default -> throw new InvalidCommandException(
                             String.format("The command \"%s\" is not recognised", command));
                 }
