@@ -49,21 +49,25 @@ public class Carbon {
             String[] words = input.toLowerCase().split(" ");
             String command = words[0];
 
-            if (command.equals("bye")) {
-                return;
-            } else if (command.equals("list")) {
-                printTasks();
-            } else if (command.equals("mark")) {
-                int index = Integer.parseInt(words[1]) - 1;
-                tasks.get(index).markAsDone();
-                printMessage("Marked as done:", tasks.get(index).toString());
-            } else if (command.equals("unmark")) {
-                int index = Integer.parseInt(words[1]) - 1;
-                tasks.get(index).markAsNotDone();
-                printMessage("Marked as not done:", tasks.get(index).toString());
-            } else {
-                tasks.add(new Task(input));
-                printMessage("added: " + input);
+            switch (command) {
+                case "bye" -> {
+                    return;
+                }
+                case "list" -> printTasks();
+                case "mark" -> {
+                    int index = Integer.parseInt(words[1]) - 1;
+                    tasks.get(index).markAsDone();
+                    printMessage("Marked as done:", tasks.get(index).toString());
+                }
+                case "unmark" -> {
+                    int index = Integer.parseInt(words[1]) - 1;
+                    tasks.get(index).markAsNotDone();
+                    printMessage("Marked as not done:", tasks.get(index).toString());
+                }
+                default -> {
+                    tasks.add(new Task(input));
+                    printMessage("added: " + input);
+                }
             }
         }
     }
