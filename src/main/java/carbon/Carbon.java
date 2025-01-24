@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Carbon {
-    private static final String horizontalLine = "_".repeat(60);
+    private static final String HORIZONTAL_LINE = "_".repeat(60);
 
     private static ArrayList<Task> tasks;
 
@@ -26,11 +26,11 @@ public class Carbon {
      * @param message Message to be printed.
      */
     private static void printMessage(String... message) {
-        System.out.println("    " + horizontalLine);
+        System.out.println("    " + HORIZONTAL_LINE);
         for (String s : message) {
             System.out.println("     " + s.replace("\n", "\n     "));
         }
-        System.out.println("    " + horizontalLine + "\n");
+        System.out.println("    " + HORIZONTAL_LINE + "\n");
     }
 
     /**
@@ -98,6 +98,8 @@ public class Carbon {
     }
 
     private static void addDeadline(String arg) {
+        // Regex matches a String of the form "{A} /by {B}", where A and B each contain at least
+        // one non-whitespace character
         Matcher matcher = Pattern.compile("^(.*\\S.*) /by (.*\\S.*)$").matcher(arg);
         if (!matcher.find()) {
             throw new InvalidArgumentException(
@@ -108,6 +110,8 @@ public class Carbon {
     }
 
     private static void addEvent(String arg) {
+        // Regex matches a String of the form "{A} /from {B} /to {C}", where A, B, and C each
+        // contain at least one non-whitespace character
         Matcher matcher = Pattern.compile("^(.*\\S.*) /from (.*\\S.*) /to (.*\\S.*)$").matcher(arg);
         if (!matcher.find()) {
             throw new InvalidArgumentException(
