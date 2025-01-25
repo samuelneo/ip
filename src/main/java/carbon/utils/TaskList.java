@@ -95,6 +95,6 @@ public class TaskList {
     public String deleteTask(int index) {
         Task task = tasks.remove(index);
         Storage.updateDataFile(tasks);
-        return "Deleted the following task:\n" + task;
+        return "Deleted the following task:\n" + formatTask(task);
     }
 }
