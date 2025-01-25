@@ -2,12 +2,18 @@ package carbon;
 
 import carbon.exceptions.InvalidArgumentException;
 import carbon.exceptions.InvalidCommandException;
+import carbon.exceptions.InvalidFileFormatException;
 import carbon.task.Deadline;
 import carbon.task.Event;
 import carbon.task.Task;
 import carbon.task.Todo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,8 +22,10 @@ import java.util.stream.IntStream;
 
 public class Carbon {
     private static final String HORIZONTAL_LINE = "_".repeat(60);
+    private static final String TASKS_FILE_PATH = "data/user/tasks.txt";
 
     private static ArrayList<Task> tasks;
+    private static boolean hasTaskListChanged = false;
 
     /**
      * Prints the message in between two horizontal lines.
@@ -68,6 +76,7 @@ public class Carbon {
 
     private static void printAndAddTask(Task task) {
         tasks.add(task);
+        hasTaskListChanged = true;
         printTask("Added:", task);
     }
 
@@ -77,6 +86,7 @@ public class Carbon {
                 ? String.format("Task #%d is already done (no changes made).", index+1)
                 : "Marked as done:";
         task.markAsDone();
+        hasTaskListChanged = true;
         printMessage(message, "   " + tasks.get(index).toString());
     }
 
@@ -86,6 +96,7 @@ public class Carbon {
                 ? "Marked as not done:"
                 : String.format("Task #%d has not been done (no changes made).", index+1);
         task.unmarkAsDone();
+        hasTaskListChanged = true;
         printMessage(message, "   " + tasks.get(index).toString());
     }
 
@@ -123,6 +134,7 @@ public class Carbon {
 
     private static void deleteTask(int index) {
         Task task = tasks.remove(index);
+        hasTaskListChanged = true;
         printTask("Deleted the following task:", task);
     }
 
@@ -130,14 +142,15 @@ public class Carbon {
      * Processes user commands until they enter "bye".
      */
     private static void inputLoop() {
-        tasks = new ArrayList<>(); // initialise empty carbon.task list
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            hasTaskListChanged = false;
+
             String input = scanner.nextLine().trim();
             String[] words = input.split(" ", 2);
             String command = words[0].toLowerCase();
-            String arg = (words.length > 1 ? words[1] : "").trim();
+            String arg = words.length > 1 ? words[1].trim() : "";
 
             try {
                 switch (command) {
@@ -164,7 +177,81 @@ public class Carbon {
                         : "Tasks are numbered from 1 to " + tasks.size();
                 printError(message);
             }
+
+            if (hasTaskListChanged) {
+                updateDataFile();
+            }
         }
+    }
+
+    private static void updateDataFile() {
+        try (FileWriter writer = new FileWriter(TASKS_FILE_PATH)) {
+            for (Task task : tasks) {
+                writer.write(task.getStorageText() + "\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String loadDataFile() {
+        String message = "";
+
+        File dataFile = new File(TASKS_FILE_PATH);
+        if (!dataFile.getParentFile().exists() && !dataFile.getParentFile().mkdirs()) {
+            throw new RuntimeException("Unable to create data/user/ directory");
+        }
+        boolean fileExists;
+        try {
+            fileExists = !dataFile.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        tasks = new ArrayList<>(); // initialise empty carbon.task list
+        if (fileExists) {
+            try {
+                Scanner scanner = new Scanner(dataFile);
+                while (scanner.hasNextLine()) {
+                    String firstLine = scanner.nextLine();
+                    if (firstLine.isEmpty()) {
+                        break;
+                    }
+                    char type = firstLine.charAt(0);
+                    boolean isDone = scanner.nextLine().charAt(0) == '1';
+                    String description = scanner.nextLine().trim();
+                    Task task = switch (type) {
+                        case 'T' -> new Todo(description);
+                        case 'D' -> {
+                            String dueBy = scanner.nextLine().trim();
+                            yield new Deadline(description, dueBy);
+                        }
+                        case 'E' -> {
+                            String from = scanner.nextLine().trim();
+                            String to = scanner.nextLine().trim();
+                            yield new Event(description, from, to);
+                        }
+                        default -> throw new InvalidFileFormatException();
+                    };
+                    if (isDone) {
+                        task.markAsDone();
+                    }
+                    tasks.add(task);
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IndexOutOfBoundsException | NoSuchElementException | InvalidFileFormatException e) {
+                message += "The data file was corrupted. Its contents are ignored and will be reset.\n";
+                tasks.clear();
+                try {
+                    // Clear tasks.txt contents
+                    new FileWriter(TASKS_FILE_PATH).close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        return message;
     }
 
     public static void main(String[] args) {
@@ -174,7 +261,8 @@ public class Carbon {
                  | |   / _` | '__| '_ \\ / _ \\| '_ \\
                  | |__| (_| | |  | |_) | (_) | | | |
                   \\____\\__,_|_|  |_.__/ \\___/|_| |_|""";
-        printMessage(logo + "\nHello! What can I do for you?");
+        String loadDataMessage = loadDataFile();
+        printMessage(logo, loadDataMessage + "Hello! What can I do for you?");
         inputLoop();
         printMessage("Goodbye!");
     }
