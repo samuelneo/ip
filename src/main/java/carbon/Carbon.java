@@ -25,7 +25,7 @@ public class Carbon {
     private static final String TASKS_FILE_PATH = "data/user/tasks.txt";
 
     private static ArrayList<Task> tasks;
-    private static boolean hasTasklistChanged = false;
+    private static boolean hasTaskListChanged = false;
 
     /**
      * Prints the message in between two horizontal lines.
@@ -76,7 +76,7 @@ public class Carbon {
 
     private static void printAndAddTask(Task task) {
         tasks.add(task);
-        hasTasklistChanged = true;
+        hasTaskListChanged = true;
         printTask("Added:", task);
     }
 
@@ -86,7 +86,7 @@ public class Carbon {
                 ? String.format("Task #%d is already done (no changes made).", index+1)
                 : "Marked as done:";
         task.markAsDone();
-        hasTasklistChanged = true;
+        hasTaskListChanged = true;
         printMessage(message, "   " + tasks.get(index).toString());
     }
 
@@ -96,7 +96,7 @@ public class Carbon {
                 ? "Marked as not done:"
                 : String.format("Task #%d has not been done (no changes made).", index+1);
         task.unmarkAsDone();
-        hasTasklistChanged = true;
+        hasTaskListChanged = true;
         printMessage(message, "   " + tasks.get(index).toString());
     }
 
@@ -134,7 +134,7 @@ public class Carbon {
 
     private static void deleteTask(int index) {
         Task task = tasks.remove(index);
-        hasTasklistChanged = true;
+        hasTaskListChanged = true;
         printTask("Deleted the following task:", task);
     }
 
@@ -145,7 +145,7 @@ public class Carbon {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            hasTasklistChanged = false;
+            hasTaskListChanged = false;
 
             String input = scanner.nextLine().trim();
             String[] words = input.split(" ", 2);
@@ -178,7 +178,7 @@ public class Carbon {
                 printError(message);
             }
 
-            if (hasTasklistChanged) {
+            if (hasTaskListChanged) {
                 updateDataFile();
             }
         }
