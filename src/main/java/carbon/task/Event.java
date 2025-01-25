@@ -3,9 +3,9 @@ package carbon.task;
 /**
  * Event is a Task with a start and end date/time.
  */
-public class Event extends Task{
-    protected String start;
-    protected String end;
+public class Event extends Task {
+    private final DateTime start;
+    private final DateTime end;
 
     /**
      * Creates an Event with the specified description, start date/time, and end date/time.
@@ -16,8 +16,8 @@ public class Event extends Task{
      */
     public Event(String description, String start, String end) {
         super('E', description);
-        this.start = start;
-        this.end = end;
+        this.start = DateTime.parse(start);
+        this.end = DateTime.parse(end);
     }
 
     /**
