@@ -3,7 +3,10 @@ package carbon;
 import carbon.exceptions.InvalidArgumentException;
 import carbon.exceptions.InvalidCommandException;
 import carbon.exceptions.InvalidFileFormatException;
-import carbon.task.*;
+import carbon.task.Deadline;
+import carbon.task.Event;
+import carbon.task.Task;
+import carbon.task.Todo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
