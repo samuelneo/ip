@@ -15,20 +15,24 @@ public class Event extends Task{
      * @param end End date/time of the Event.
      */
     public Event(String description, String start, String end) {
-        super(description);
+        super('E', description);
         this.start = start;
         this.end = end;
     }
 
     /**
-     * Returns a String representation of the Event.
-     * This includes the label [E], the completion status icon, followed by
-     * the description of the Event, the start date/time, and the end date/time.
-     *
-     * @return String representation of the Event.
+     * {@inheritDoc}
+     */
+    public String getStorageText() {
+        return super.getStorageText() + "\n" + start + "\n" + end;
+    }
+
+    /**
+     * {@inheritDoc}
+     * Additionally, the start and end date/time is included.
      */
     @Override
     public String toString() {
-        return String.format("[E][%s] %s (from: %s, to: %s)", getStatusIcon(), description, start, end);
+        return String.format("%s (from: %s, to: %s)", super.toString(), start, end);
     }
 }

@@ -13,19 +13,23 @@ public class Deadline extends Task{
      * @param dueBy Due date/time of the Deadline.
      */
     public Deadline(String description, String dueBy) {
-        super(description);
+        super('D', description);
         this.dueBy = dueBy;
     }
 
     /**
-     * Returns a String representation of the Deadline.
-     * This includes the label [D], the completion status icon, followed by
-     * the description of the Deadline and the due date/time.
-     *
-     * @return String representation of the Deadline.
+     * {@inheritDoc}
+     */
+    public String getStorageText() {
+        return super.getStorageText() + "\n" + dueBy;
+    }
+
+    /**
+     * {@inheritDoc}
+     * Additionally, the due date/time is included.
      */
     @Override
     public String toString() {
-        return String.format("[D][%s] %s (by: %s)", getStatusIcon(), description, dueBy);
+        return String.format("%s (by: %s)", super.toString(), dueBy);
     }
 }

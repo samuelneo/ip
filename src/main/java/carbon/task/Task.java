@@ -4,7 +4,8 @@ package carbon.task;
  * Task is an entry in the task list.
  * Each Task has a description and a completion status (isDone).
  */
-public class Task {
+public abstract class Task {
+    protected final char type;
     protected String description;
     protected boolean isDone;
 
@@ -13,7 +14,8 @@ public class Task {
      *
      * @param description Description of the Task.
      */
-    public Task(String description) {
+    public Task(char type, String description) {
+        this.type = type;
         this.description = description;
         this.isDone = false;
     }
@@ -48,13 +50,23 @@ public class Task {
     }
 
     /**
+     * Returns a String, formatted for text storage of the Task.
+     *
+     * @return Representation of the Task in text storage.
+     */
+    public String getStorageText() {
+        return type + "\n" + (isDone ? "1" : "0") + "\n" + description;
+    }
+
+    /**
      * Returns a String representation of the Task.
-     * This includes the completion status icon, followed by the description of the Task.
+     * This includes the label representing the type of Task, the completion status icon,
+     * and the description of the Task.
      *
      * @return String representation of the Task.
      */
     @Override
     public String toString() {
-        return String.format("[%s] %s", getStatusIcon(), description);
+        return String.format("[%s][%s] %s", type, getStatusIcon(), description);
     }
 }

@@ -24,8 +24,10 @@ import java.util.stream.IntStream;
 
 public class Carbon {
     private static final String HORIZONTAL_LINE = "_".repeat(60);
+    private static final String TASKS_FILE_PATH = "data/user/tasks.txt";
 
     private static ArrayList<Task> tasks;
+    private static boolean hasTasklistChanged = false;
 
     /**
      * Prints the message in between two horizontal lines.
@@ -76,6 +78,7 @@ public class Carbon {
 
     private static void printAndAddTask(Task task) {
         tasks.add(task);
+        hasTasklistChanged = true;
         printTask("Added:", task);
     }
 
@@ -85,6 +88,7 @@ public class Carbon {
                 ? String.format("Task #%d is already done (no changes made).", index+1)
                 : "Marked as done:";
         task.markAsDone();
+        hasTasklistChanged = true;
         printMessage(message, "   " + tasks.get(index).toString());
     }
 
@@ -94,6 +98,7 @@ public class Carbon {
                 ? "Marked as not done:"
                 : String.format("Task #%d has not been done (no changes made).", index+1);
         task.unmarkAsDone();
+        hasTasklistChanged = true;
         printMessage(message, "   " + tasks.get(index).toString());
     }
 
@@ -131,6 +136,7 @@ public class Carbon {
 
     private static void deleteTask(int index) {
         Task task = tasks.remove(index);
+        hasTasklistChanged = true;
         printTask("Deleted the following task:", task);
     }
 
@@ -141,10 +147,12 @@ public class Carbon {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            hasTasklistChanged = false;
+
             String input = scanner.nextLine().trim();
             String[] words = input.split(" ", 2);
             String command = words[0].toLowerCase();
-            String arg = (words.length > 1 ? words[1] : "").trim();
+            String arg = words.length > 1 ? words[1].trim() : "";
 
             try {
                 switch (command) {
@@ -171,22 +179,35 @@ public class Carbon {
                         : "Tasks are numbered from 1 to " + tasks.size();
                 printError(message);
             }
+
+            if (hasTasklistChanged) {
+                updateDataFile();
+            }
+        }
+    }
+
+    private static void updateDataFile() {
+        try (FileWriter writer = new FileWriter(TASKS_FILE_PATH)) {
+            for (Task task : tasks) {
+                writer.write(task.getStorageText() + "\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private static String loadDataFile() {
         String message = "";
-        File dir = new File("data/user");
-        if (!dir.exists() && !dir.mkdirs()) {
+
+        File dataFile = new File(TASKS_FILE_PATH);
+        if (!dataFile.getParentFile().exists() && !dataFile.getParentFile().mkdirs()) {
             throw new RuntimeException("Unable to create data/user/ directory");
         }
-
-        File dataFile = new File(dir, "tasks.txt");
         boolean fileExists;
         try {
             fileExists = !dataFile.createNewFile();
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
 
         tasks = new ArrayList<>(); // initialise empty carbon.task list
@@ -194,36 +215,41 @@ public class Carbon {
             try {
                 Scanner scanner = new Scanner(dataFile);
                 while (scanner.hasNextLine()) {
-                    char type = scanner.nextLine().charAt(0);
+                    String firstLine = scanner.nextLine();
+                    if (firstLine.isEmpty()) {
+                        break;
+                    }
+                    char type = firstLine.charAt(0);
                     boolean isDone = scanner.nextLine().charAt(0) == '1';
                     String description = scanner.nextLine().trim();
-                    switch (type) {
-                    case 'T':
-                        tasks.add(new Todo(description));
-                        break;
-                    case 'D':
-                        String dueBy = scanner.nextLine().trim();
-                        tasks.add(new Deadline(description, dueBy));
-                        break;
-                    case 'E':
-                        String from = scanner.nextLine().trim();
-                        String to = scanner.nextLine().trim();
-                        tasks.add(new Event(description, from, to));
-                        break;
-                    default:
-                        throw new InvalidFileFormatException();
+                    Task task = switch (type) {
+                        case 'T' -> new Todo(description);
+                        case 'D' -> {
+                            String dueBy = scanner.nextLine().trim();
+                            yield new Deadline(description, dueBy);
+                        }
+                        case 'E' -> {
+                            String from = scanner.nextLine().trim();
+                            String to = scanner.nextLine().trim();
+                            yield new Event(description, from, to);
+                        }
+                        default -> throw new InvalidFileFormatException();
+                    };
+                    if (isDone) {
+                        task.markAsDone();
                     }
+                    tasks.add(task);
                 }
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e.getMessage());
-            } catch (IndexOutOfBoundsException | NoSuchElementException | InvalidCommandException e) {
+                throw new RuntimeException(e);
+            } catch (IndexOutOfBoundsException | NoSuchElementException | InvalidFileFormatException e) {
                 message += "The data file was corrupted. Its contents are ignored and will be reset.\n";
                 tasks.clear();
                 try {
                     // Clear tasks.txt contents
-                    new FileWriter("data/tasks.txt", false).close();
+                    new FileWriter(TASKS_FILE_PATH).close();
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex.getMessage());
+                    throw new RuntimeException(ex);
                 }
             }
         }
