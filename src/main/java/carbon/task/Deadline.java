@@ -3,8 +3,8 @@ package carbon.task;
 /**
  * Deadline is a Task with a due date/time.
  */
-public class Deadline extends Task{
-    protected String dueBy;
+public class Deadline extends Task {
+    private final Temporal dueBy;
 
     /**
      * Creates a Deadline with the specified description and due date/time.
@@ -14,7 +14,7 @@ public class Deadline extends Task{
      */
     public Deadline(String description, String dueBy) {
         super('D', description);
-        this.dueBy = dueBy;
+        this.dueBy = Temporal.parse(dueBy);
     }
 
     /**
