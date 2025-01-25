@@ -9,5 +9,6 @@ build/
 src/main/resources/docs/
 
 bin/
+data/user/
 text-ui-test/ACTUAL.txt
 text-ui-test/EXPECTED-UNIX.txt

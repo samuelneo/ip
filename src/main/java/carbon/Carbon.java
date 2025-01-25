@@ -2,12 +2,20 @@ package carbon;
 
 import carbon.exceptions.InvalidArgumentException;
 import carbon.exceptions.InvalidCommandException;
+import carbon.exceptions.InvalidFileFormatException;
 import carbon.task.Deadline;
 import carbon.task.Event;
 import carbon.task.Task;
 import carbon.task.Todo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.FileSystemException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -130,7 +138,6 @@ public class Carbon {
      * Processes user commands until they enter "bye".
      */
     private static void inputLoop() {
-        tasks = new ArrayList<>(); // initialise empty carbon.task list
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -167,6 +174,62 @@ public class Carbon {
         }
     }
 
+    private static String loadDataFile() {
+        String message = "";
+        File dir = new File("data/user");
+        if (!dir.exists() && !dir.mkdirs()) {
+            throw new RuntimeException("Unable to create data/user/ directory");
+        }
+
+        File dataFile = new File(dir, "tasks.txt");
+        boolean fileExists;
+        try {
+            fileExists = !dataFile.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        tasks = new ArrayList<>(); // initialise empty carbon.task list
+        if (fileExists) {
+            try {
+                Scanner scanner = new Scanner(dataFile);
+                while (scanner.hasNextLine()) {
+                    char type = scanner.nextLine().charAt(0);
+                    boolean isDone = scanner.nextLine().charAt(0) == '1';
+                    String description = scanner.nextLine().trim();
+                    switch (type) {
+                    case 'T':
+                        tasks.add(new Todo(description));
+                        break;
+                    case 'D':
+                        String dueBy = scanner.nextLine().trim();
+                        tasks.add(new Deadline(description, dueBy));
+                        break;
+                    case 'E':
+                        String from = scanner.nextLine().trim();
+                        String to = scanner.nextLine().trim();
+                        tasks.add(new Event(description, from, to));
+                        break;
+                    default:
+                        throw new InvalidFileFormatException();
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e.getMessage());
+            } catch (IndexOutOfBoundsException | NoSuchElementException | InvalidCommandException e) {
+                message += "The data file was corrupted. Its contents are ignored and will be reset.\n";
+                tasks.clear();
+                try {
+                    // Clear tasks.txt contents
+                    new FileWriter("data/tasks.txt", false).close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
+            }
+        }
+        return message;
+    }
+
     public static void main(String[] args) {
         String logo = """
                    ____           _
@@ -174,7 +237,8 @@ public class Carbon {
                  | |   / _` | '__| '_ \\ / _ \\| '_ \\
                  | |__| (_| | |  | |_) | (_) | | | |
                   \\____\\__,_|_|  |_.__/ \\___/|_| |_|""";
-        printMessage(logo + "\nHello! What can I do for you?");
+        String loadDataMessage = loadDataFile();
+        printMessage(logo, loadDataMessage + "Hello! What can I do for you?");
         inputLoop();
         printMessage("Goodbye!");
     }
