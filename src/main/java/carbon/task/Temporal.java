@@ -17,12 +17,6 @@ public class Temporal implements Comparable<Temporal> {
         INVALID
     }
 
-    private final TemporalType type;
-    private LocalDate date;
-    private LocalTime time;
-    private LocalDateTime dateTime;
-    private String text;
-
     private static final DateTimeFormatter[] DATE_FORMATTERS = {
             DateTimeFormatter.ofPattern("d/M/yyyy"),
             DateTimeFormatter.ofPattern("yyyy/M/d"),
@@ -56,6 +50,12 @@ public class Temporal implements Comparable<Temporal> {
             DateTimeFormatter.ofPattern("d MMM yyyy ha"),
             DateTimeFormatter.ofPattern("yyyy MMM d ha")
     };
+
+    private final TemporalType type;
+    private LocalDate date;
+    private LocalTime time;
+    private LocalDateTime dateTime;
+    private String text;
 
     private Temporal(LocalDate date) {
         this.date = date;
