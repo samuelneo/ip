@@ -22,7 +22,7 @@ public class TaskList {
             return "You don't have any tasks! :)";
         }
         return "Tasks:\n" + IntStream.range(0, tasks.size())
-                .mapToObj(i -> (i+1) + ". " + tasks.get(i).toString())
+                .mapToObj(i -> (i + 1) + ". " + tasks.get(i).toString())
                 .collect(Collectors.joining("\n"));
     }
 
@@ -57,7 +57,7 @@ public class TaskList {
     public String markTask(int index) {
         Task task = tasks.get(index);
         String message = task.isDone()
-                ? String.format("Task #%d is already done (no changes made).", index+1)
+                ? String.format("Task #%d is already done (no changes made).", index + 1)
                 : "Marked as done:";
         task.markAsDone();
         Storage.updateDataFile(tasks);
@@ -68,7 +68,7 @@ public class TaskList {
         Task task = tasks.get(index);
         String message = task.isDone()
                 ? "Marked as not done:"
-                : String.format("Task #%d has not been done (no changes made).", index+1);
+                : String.format("Task #%d has not been done (no changes made).", index + 1);
         task.unmarkAsDone();
         Storage.updateDataFile(tasks);
         return message + "\n   " + tasks.get(index);
