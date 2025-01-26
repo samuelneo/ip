@@ -6,6 +6,9 @@ import carbon.task.TaskList;
 
 import java.util.Scanner;
 
+/**
+ * Ui manages interactions with the user.
+ */
 public class Ui {
     private static final String LOGO = """
                    ____           _
@@ -20,6 +23,9 @@ public class Ui {
         this.taskList = new TaskList();
     }
 
+    /**
+     * Starts a new Ui process.
+     */
     public static void start() {
         new Ui().run();
     }
@@ -74,7 +80,7 @@ public class Ui {
 
             try {
                 // CHECKSTYLE.OFF: Indentation
-                // Current checkstyle configuration does not support lambda-style switch statements
+                // Reason: checkstyle configuration does not support lambda-style switch statements
                 String message = switch (command) {
                     case "list" -> taskList.listTasks();
                     case "mark" -> taskList.markTask(Integer.parseInt(arg) - 1);
