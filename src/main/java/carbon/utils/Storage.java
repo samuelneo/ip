@@ -1,10 +1,7 @@
 package carbon.utils;
 
 import carbon.exceptions.InvalidFileFormatException;
-import carbon.task.Deadline;
-import carbon.task.Event;
-import carbon.task.Task;
-import carbon.task.Todo;
+import carbon.task.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +49,8 @@ public class Storage {
                     char type = firstLine.charAt(0);
                     boolean isDone = scanner.nextLine().charAt(0) == '1';
                     String description = scanner.nextLine().trim();
+                    // CHECKSTYLE.OFF: Indentation
+                    // Current checkstyle configuration does not support lambda-style switch statements
                     Task task = switch (type) {
                         case 'T' -> new Todo(description);
                         case 'D' -> {
@@ -65,6 +64,7 @@ public class Storage {
                         }
                         default -> throw new InvalidFileFormatException();
                     };
+                    // CHECKSTYLE.ON: Indentation
                     if (isDone) {
                         task.markAsDone();
                     }
