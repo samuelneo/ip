@@ -63,7 +63,7 @@ public class TaskList {
                 .toList();
         boolean isPlural = results.size() != 1;
         return results.isEmpty()
-                ? String.format("You don't have any tasks that contain \"%s\"", filter)
+                ? String.format("You don't have any tasks that contain \"%s\".", filter)
                 : String.format("%d task%s contain%s \"%s\":\n", results.size(), isPlural ? "s" : "",
                 isPlural ? "" : "s", filter) + String.join("\n", results);
     }
