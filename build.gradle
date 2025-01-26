@@ -33,11 +33,11 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "duke"
+    archiveBaseName = "carbon"
     archiveClassifier = null
 }
 
-run{
+run {
     standardInput = System.in
 }
 
