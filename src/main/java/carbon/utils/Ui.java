@@ -77,6 +77,7 @@ public class Ui {
                 // Current checkstyle configuration does not support lambda-style switch statements
                 String message = switch (command) {
                     case "list" -> taskList.listTasks();
+                    case "find" -> taskList.listTasks(arg);
                     case "mark" -> taskList.markTask(Integer.parseInt(arg) - 1);
                     case "unmark" -> taskList.unmarkTask(Integer.parseInt(arg) - 1);
                     case "todo" -> taskList.addTodo(arg);

@@ -5,6 +5,7 @@ import carbon.utils.Parser;
 import carbon.utils.Storage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -20,8 +21,38 @@ public class TaskList {
             return "You don't have any tasks! :)";
         }
         return "Tasks:\n" + IntStream.range(0, tasks.size())
-                .mapToObj(i -> (i + 1) + ". " + tasks.get(i).toString())
+                .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
                 .collect(Collectors.joining("\n"));
+    }
+
+    /**
+     * Returns a String that lists all tasks in the TaskList whose String representation
+     * contains <code>filter</code> (case-insensitive).
+     * <p>
+     * Tasks are still numbered according to their original indices, rather than the
+     * indices by which they appear in the filtered output. This is because the user
+     * interacts with tasks based on their index in the TaskList, so presenting the
+     * original index of the task avoids confusion.
+     *
+     * @param filter The text to filter by.
+     * @return String representing the filtered TaskList.
+     */
+    public String listTasks(String filter) {
+        if (filter.isEmpty()) {
+            throw new InvalidArgumentException("I expected some text after \"find\"");
+        }
+        if (tasks.isEmpty()) {
+            return "You don't have any tasks! :)";
+        }
+        List<String> results = IntStream.range(0, tasks.size())
+                .filter(i -> tasks.get(i).toString().toLowerCase().contains(filter.toLowerCase()))
+                .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
+                .toList();
+        boolean isPlural = results.size() != 1;
+        return results.isEmpty()
+                ? String.format("You don't have any tasks that contain \"%s\"", filter)
+                : String.format("%d task%s contain%s \"%s\":\n", results.size(), isPlural ? "s" : "",
+                isPlural ? "" : "s", filter) + String.join("\n", results);
     }
 
     public boolean isEmpty() {
