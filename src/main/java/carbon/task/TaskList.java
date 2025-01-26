@@ -1,12 +1,12 @@
 package carbon.task;
 
-import carbon.exceptions.InvalidArgumentException;
-import carbon.utils.Parser;
-import carbon.utils.Storage;
-
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import carbon.exceptions.InvalidArgumentException;
+import carbon.utils.Parser;
+import carbon.utils.Storage;
 
 /**
  * A TaskList manages a list of tasks.
@@ -80,9 +80,9 @@ public class TaskList {
      * @return String representing the input task and TaskList size.
      */
     public String formatTask(Task task) {
-        boolean pluralise = tasks.size() != 1;
+        boolean isPlural = tasks.size() != 1;
         return "   " + task.toString() + "\n"
-                + String.format("You now have %d task%s.", tasks.size(), pluralise ? "s" : "");
+                + String.format("You now have %d task%s.", tasks.size(), isPlural ? "s" : "");
     }
 
     private String addTask(Task task) {

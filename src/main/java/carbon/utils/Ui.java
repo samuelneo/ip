@@ -1,10 +1,10 @@
 package carbon.utils;
 
+import java.util.Scanner;
+
 import carbon.exceptions.InvalidArgumentException;
 import carbon.exceptions.InvalidCommandException;
 import carbon.task.TaskList;
-
-import java.util.Scanner;
 
 /**
  * Ui manages interactions with the user.
