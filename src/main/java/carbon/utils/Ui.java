@@ -2,6 +2,7 @@ package carbon.utils;
 
 import carbon.exceptions.InvalidArgumentException;
 import carbon.exceptions.InvalidCommandException;
+import carbon.task.TaskList;
 
 import java.util.Scanner;
 
@@ -72,6 +73,8 @@ public class Ui {
             }
 
             try {
+                // CHECKSTYLE.OFF: Indentation
+                // Current checkstyle configuration does not support lambda-style switch statements
                 String message = switch (command) {
                     case "list" -> taskList.listTasks();
                     case "mark" -> taskList.markTask(Integer.parseInt(arg) - 1);
@@ -83,6 +86,7 @@ public class Ui {
                     default -> throw new InvalidCommandException(
                             String.format("The command \"%s\" is not recognised", command));
                 };
+                // CHECKSTYLE.ON: Indentation
                 printMessage(message);
             } catch (InvalidCommandException | InvalidArgumentException e) {
                 printError(e.getMessage());
