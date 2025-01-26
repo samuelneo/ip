@@ -7,7 +7,22 @@ import carbon.task.Event;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Parser contains static methods that manage the parsing of user input.
+ */
 public class Parser {
+    /**
+     * Parses user input regarding a deadline into a Deadline.
+     * <p>
+     * The input <code>text</code> is the user input to be parsed into a Deadline
+     * (excluding the word "deadline").
+     * <p>
+     * For example, if the user inputs "deadline assignment /by 1pm",
+     * <code>text</code> would be "assignment /by 1pm".
+     *
+     * @param text Details of the Deadline.
+     * @return The Deadline object.
+     */
     public static Deadline parseDeadline(String text) {
         // Regex matches a String of the form "{A} /by {B}", where A and B each contain at least
         // one non-whitespace character
@@ -19,6 +34,18 @@ public class Parser {
         return new Deadline(matcher.group(1), matcher.group(2));
     }
 
+    /**
+     * Parses user input regarding an event into an Event.
+     * <p>
+     * The input <code>text</code> is the user input to be parsed into an Event
+     * (excluding the word "event").
+     * <p>
+     * For example, if the user inputs "event meeting /from 4pm /to 5pm",
+     * <code>text</code> would be "meeting /from 4pm /to 5pm".
+     *
+     * @param text Details of the Event.
+     * @return The Event object.
+     */
     public static Event parseEvent(String text) {
         // Regex matches a String of the form "{A} /from {B} /to {C}", where A, B, and C each
         // contain at least one non-whitespace character

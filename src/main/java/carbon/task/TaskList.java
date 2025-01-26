@@ -8,13 +8,26 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * A TaskList manages a list of tasks.
+ */
 public class TaskList {
     private final ArrayList<Task> tasks;
 
+    /**
+     * Creates a TaskList object with no tasks.
+     */
     public TaskList() {
         tasks = new ArrayList<>();
     }
 
+    /**
+     * Returns a String that lists all tasks in the TaskList.
+     * <p>
+     * Tasks are numbered, starting from 1.
+     *
+     * @return String representing the TaskList.
+     */
     public String listTasks() {
         if (tasks.isEmpty()) {
             return "You don't have any tasks! :)";
@@ -24,22 +37,48 @@ public class TaskList {
                 .collect(Collectors.joining("\n"));
     }
 
+    /**
+     * Returns <code>true</code> if the TaskList is empty,
+     * <code>false</code> otherwise.
+     *
+     * @return Whether the TaskList is empty.
+     */
     public boolean isEmpty() {
         return tasks.isEmpty();
     }
 
+    /**
+     * Returns the number of tasks in the TaskList.
+     *
+     * @return Number of tasks.
+     */
     public int size() {
         return tasks.size();
     }
 
+    /**
+     * Adds a task to the TaskList.
+     *
+     * @param task Task to be added.
+     */
     public void add(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Clears the TaskList.
+     */
     public void clear() {
         tasks.clear();
     }
 
+    /**
+     * Returns a String representing the input task, along with the
+     * number of tasks currently in the TaskList.
+     *
+     * @param task Task to be formatted.
+     * @return String representing the input task and TaskList size.
+     */
     public String formatTask(Task task) {
         boolean pluralise = tasks.size() != 1;
         return "   " + task.toString() + "\n"
@@ -52,6 +91,15 @@ public class TaskList {
         return "Added:\n" + formatTask(task);
     }
 
+    /**
+     * Marks a task as done.
+     * <p>
+     * Does nothing if the task has already been marked as done.
+     *
+     * @param index Index of the task in the TaskList to mark.
+     * @return Message representing the changes made.
+     * @throws IndexOutOfBoundsException If <code>index</code> is out of bounds.
+     */
     public String markTask(int index) {
         Task task = tasks.get(index);
         String message = task.isDone()
@@ -62,6 +110,15 @@ public class TaskList {
         return message + "\n   " + tasks.get(index);
     }
 
+    /**
+     * Unmarks a task as done (i.e., marks as not done).
+     * <p>
+     * Does nothing if the task has not been marked as done.
+     *
+     * @param index Index of the task in the TaskList to unmark.
+     * @return Message representing the changes made.
+     * @throws IndexOutOfBoundsException If <code>index</code> is out of bounds.
+     */
     public String unmarkTask(int index) {
         Task task = tasks.get(index);
         String message = task.isDone()
@@ -72,6 +129,12 @@ public class TaskList {
         return message + "\n   " + tasks.get(index);
     }
 
+    /**
+     * Adds a Todo to the TaskList.
+     *
+     * @param arg Description of the Todo.
+     * @return Message representing the changes made.
+     */
     public String addTodo(String arg) {
         if (arg.isEmpty()) {
             throw new InvalidArgumentException("I expected a description after \"todo\"");
@@ -80,16 +143,47 @@ public class TaskList {
         return addTask(todo);
     }
 
+    /**
+     * Adds a Deadline to the TaskList.
+     * <p>
+     * The input <code>arg</code> is the user input to be parsed into a Deadline
+     * (excluding the word "deadline").
+     * <p>
+     * For example, if the user inputs "deadline assignment /by 1pm",
+     * <code>arg</code> would be "assignment /by 1pm".
+     *
+     * @param arg Details of the Deadline.
+     * @return Message representing the changes made.
+     */
     public String addDeadline(String arg) {
         Deadline deadline = Parser.parseDeadline(arg);
         return addTask(deadline);
     }
 
+    /**
+     * Adds an Event to the TaskList.
+     * <p>
+     * The input <code>arg</code> is the user input to be parsed into an Event
+     * (excluding the word "event").
+     * <p>
+     * For example, if the user inputs "event meeting /from 4pm /to 5pm",
+     * <code>arg</code> would be "meeting /from 4pm /to 5pm".
+     *
+     * @param arg Details of the Event.
+     * @return Message representing the changes made.
+     */
     public String addEvent(String arg) {
         Event event = Parser.parseEvent(arg);
         return addTask(event);
     }
 
+    /**
+     * Deletes a task from the TaskList.
+     *
+     * @param index Index of the task in the TaskList to delete.
+     * @return Message representing the changes made.
+     * @throws IndexOutOfBoundsException If <code>index</code> is out of bounds.
+     */
     public String deleteTask(int index) {
         Task task = tasks.remove(index);
         Storage.updateDataFile(tasks);

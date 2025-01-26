@@ -7,14 +7,20 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * A Temporal object stores a date, time, datetime, or text.
+ * A Temporal stores an object that fits into one of the following categories:
+ * <ul>
+ *     <li>Date</li>
+ *     <li>Time</li>
+ *     <li>Datetime</li>
+ *     <li>Text (none of the above)</li>
+ * </ul>
  */
 public class Temporal implements Comparable<Temporal> {
     enum TemporalType {
         DATE,
         TIME,
         DATETIME,
-        INVALID
+        TEXT
     }
 
     private static final DateTimeFormatter[] DATE_FORMATTERS = {
@@ -74,9 +80,15 @@ public class Temporal implements Comparable<Temporal> {
 
     private Temporal(String text) {
         this.text = text;
-        type = TemporalType.INVALID;
+        type = TemporalType.TEXT;
     }
 
+    /**
+     * Parses text into a date-type Temporal object.
+     *
+     * @param text Text to be parsed.
+     * @return A date-type Temporal if possible, <code>null</code> otherwise.
+     */
     public static Temporal parseToDate(String text) {
         text = text.trim();
         for (DateTimeFormatter formatter : DATE_FORMATTERS) {
@@ -91,6 +103,12 @@ public class Temporal implements Comparable<Temporal> {
         return null;
     }
 
+    /**
+     * Parses text into a time-type Temporal object.
+     *
+     * @param text Text to be parsed.
+     * @return A time-type Temporal if possible, <code>null</code> otherwise.
+     */
     public static Temporal parseToTime(String text) {
         text = text.trim();
         for (DateTimeFormatter formatter : TIME_FORMATTERS) {
@@ -105,6 +123,12 @@ public class Temporal implements Comparable<Temporal> {
         return null;
     }
 
+    /**
+     * Parses text into a datetime-type Temporal object.
+     *
+     * @param text Text to be parsed.
+     * @return A datetime-type Temporal if possible, <code>null</code> otherwise.
+     */
     public static Temporal parseToDateTime(String text) {
         text = text.trim();
         for (DateTimeFormatter formatter : DATE_TIME_FORMATTERS) {
@@ -121,6 +145,11 @@ public class Temporal implements Comparable<Temporal> {
 
     /**
      * Returns a Temporal object of the appropriate type by parsing the input text.
+     * <p>
+     * First attempts to parse the text into a datetime-type Temporal.
+     * On failure, attempts to parse into a date-type Temporal.
+     * On failure, attempts to parse into a time-type Temporal.
+     * On failure, returns a text-type Temporal.
      *
      * @param text Text to be parsed.
      * @return Temporal object obtained by parsing the text.
@@ -146,33 +175,33 @@ public class Temporal implements Comparable<Temporal> {
 
     /**
      * {@inheritDoc}
-     * A Temporal that stores text is considered to have a datetime later than a Temporal that
-     * stores date/time/datetime.
-     * A Temporal that stores a date is considered to have a time of 00:00 (midnight).
-     * A Temporal that stores time is considered to have the current date.
+     * <p>
+     * A text-type Temporal is considered to have a datetime later than a Temporal of any other type.
+     * A date-type Temporal is considered to have a time of 00:00 (midnight).
+     * A time-type Temporal is considered to have the current date.
      */
     @Override
     public int compareTo(Temporal other) {
-        if (type == TemporalType.INVALID) {
-            return other.type == TemporalType.INVALID ? 0 : 1;
+        if (type == TemporalType.TEXT) {
+            return other.type == TemporalType.TEXT ? 0 : 1;
         }
-        if (other.type == TemporalType.INVALID) {
+        if (other.type == TemporalType.TEXT) {
             return -1;
         }
 
         // CHECKSTYLE.OFF: Indentation
-        // Current checkstyle configuration does not support lambda-style switch statements
+        // Reason: Checkstyle configuration does not support lambda-style switch statements
         LocalDateTime thisDateTime = switch (type) {
             case DATE -> date.atStartOfDay();
             case TIME -> time.atDate(LocalDate.now());
             case DATETIME -> dateTime;
-            case INVALID -> throw new IllegalStateException();
+            case TEXT -> throw new IllegalStateException();
         };
         LocalDateTime otherDateTime = switch (other.type) {
             case DATE -> other.date.atStartOfDay();
             case TIME -> other.time.atDate(LocalDate.now());
             case DATETIME -> other.dateTime;
-            case INVALID -> throw new IllegalStateException();
+            case TEXT -> throw new IllegalStateException();
         };
         // CHECKSTYLE.ON: Indentation
         return thisDateTime.compareTo(otherDateTime);
@@ -186,12 +215,12 @@ public class Temporal implements Comparable<Temporal> {
     @Override
     public String toString() {
         // CHECKSTYLE.OFF: Indentation
-        // Current checkstyle configuration does not support lambda-style switch statements
+        // Reason: Checkstyle configuration does not support lambda-style switch statements
         return switch (type) {
             case DATE -> date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
             case TIME -> time.format(DateTimeFormatter.ofPattern("h:mma"));
             case DATETIME -> dateTime.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mma"));
-            case INVALID -> text;
+            case TEXT -> text;
         };
         // CHECKSTYLE.ON: Indentation
     }

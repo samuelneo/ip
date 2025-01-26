@@ -11,9 +11,17 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Storage contains static methods that manage the storage of the TaskList.
+ */
 public class Storage {
     private static final String TASKS_FILE_PATH = "data/user/tasks.txt";
 
+    /**
+     * Writes the tasks into storage.
+     *
+     * @param tasks The list of tasks.
+     */
     public static void updateDataFile(ArrayList<Task> tasks) {
         try (FileWriter writer = new FileWriter(TASKS_FILE_PATH)) {
             for (Task task : tasks) {
@@ -24,6 +32,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads data from storage into the TaskList.
+     *
+     * @param taskList TaskList to load data into.
+     * @return Message describing any abnormalities (empty if none).
+     */
     public static String loadDataFile(TaskList taskList) {
         String message = "";
 
@@ -50,7 +64,7 @@ public class Storage {
                     boolean isDone = scanner.nextLine().charAt(0) == '1';
                     String description = scanner.nextLine().trim();
                     // CHECKSTYLE.OFF: Indentation
-                    // Current checkstyle configuration does not support lambda-style switch statements
+                    // Reason: Checkstyle configuration does not support lambda-style switch statements
                     Task task = switch (type) {
                         case 'T' -> new Todo(description);
                         case 'D' -> {
@@ -73,7 +87,7 @@ public class Storage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             } catch (IndexOutOfBoundsException | NoSuchElementException | InvalidFileFormatException e) {
-                message += "The data file was corrupted. Its contents are ignored and will be reset.\n";
+                message = "The data file was corrupted. Its contents are ignored and will be reset.\n";
                 taskList.clear();
                 try {
                     // Clear tasks.txt contents
