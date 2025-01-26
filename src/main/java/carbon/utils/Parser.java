@@ -1,11 +1,11 @@
 package carbon.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import carbon.exceptions.InvalidArgumentException;
 import carbon.task.Deadline;
 import carbon.task.Event;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Parser {
     public static Deadline parseDeadline(String text) {

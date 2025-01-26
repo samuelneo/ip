@@ -1,8 +1,5 @@
 package carbon.utils;
 
-import carbon.exceptions.InvalidFileFormatException;
-import carbon.task.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -10,6 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import carbon.exceptions.InvalidFileFormatException;
+import carbon.task.Deadline;
+import carbon.task.Event;
+import carbon.task.Task;
+import carbon.task.TaskList;
+import carbon.task.Todo;
 
 public class Storage {
     private static final String TASKS_FILE_PATH = "data/user/tasks.txt";
