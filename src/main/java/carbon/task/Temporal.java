@@ -90,7 +90,6 @@ public class Temporal implements Comparable<Temporal> {
      * @return A date-type Temporal if possible, <code>null</code> otherwise.
      */
     public static Temporal parseToDate(String text) {
-        text = text.trim();
         for (DateTimeFormatter formatter : DATE_FORMATTERS) {
             try {
                 LocalDate date = LocalDate.parse(text, formatter);
@@ -110,7 +109,6 @@ public class Temporal implements Comparable<Temporal> {
      * @return A time-type Temporal if possible, <code>null</code> otherwise.
      */
     public static Temporal parseToTime(String text) {
-        text = text.trim();
         for (DateTimeFormatter formatter : TIME_FORMATTERS) {
             try {
                 LocalTime time = LocalTime.parse(text, formatter);
@@ -130,7 +128,6 @@ public class Temporal implements Comparable<Temporal> {
      * @return A datetime-type Temporal if possible, <code>null</code> otherwise.
      */
     public static Temporal parseToDateTime(String text) {
-        text = text.trim();
         for (DateTimeFormatter formatter : DATE_TIME_FORMATTERS) {
             try {
                 LocalDateTime dateTime = LocalDateTime.parse(text, formatter);
@@ -155,8 +152,6 @@ public class Temporal implements Comparable<Temporal> {
      * @return Temporal object obtained by parsing the text.
      */
     public static Temporal parse(String text) {
-        text = text.trim();
-
         // Try parsing to datetime, then date, then time
         Temporal temporal = parseToDateTime(text);
         if (temporal == null) {

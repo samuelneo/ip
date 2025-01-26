@@ -31,7 +31,7 @@ public class Parser {
             throw new InvalidArgumentException(
                     "Deadline commands should be formatted as \"deadline [description] /by [due date/time]\"");
         }
-        return new Deadline(matcher.group(1), matcher.group(2));
+        return new Deadline(matcher.group(1).trim(), matcher.group(2).trim());
     }
 
     /**
@@ -54,6 +54,6 @@ public class Parser {
             throw new InvalidArgumentException(
                     "Event commands should be formatted as \"event [description] /from [start] /to [end]\"");
         }
-        return new Event(matcher.group(1), matcher.group(2), matcher.group(3));
+        return new Event(matcher.group(1).trim(), matcher.group(2).trim(), matcher.group(3).trim());
     }
 }
