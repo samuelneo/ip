@@ -184,8 +184,6 @@ public class Temporal implements Comparable<Temporal> {
             return -1;
         }
 
-        // CHECKSTYLE.OFF: Indentation
-        // Reason: Checkstyle configuration does not support lambda-style switch statements
         LocalDateTime thisDateTime = switch (type) {
             case DATE -> date.atStartOfDay();
             case TIME -> time.atDate(LocalDate.now());
@@ -198,7 +196,6 @@ public class Temporal implements Comparable<Temporal> {
             case DATETIME -> other.dateTime;
             case TEXT -> throw new IllegalStateException();
         };
-        // CHECKSTYLE.ON: Indentation
         return thisDateTime.compareTo(otherDateTime);
     }
 
@@ -209,14 +206,11 @@ public class Temporal implements Comparable<Temporal> {
      */
     @Override
     public String toString() {
-        // CHECKSTYLE.OFF: Indentation
-        // Reason: Checkstyle configuration does not support lambda-style switch statements
         return switch (type) {
             case DATE -> date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
             case TIME -> time.format(DateTimeFormatter.ofPattern("h:mma"));
             case DATETIME -> dateTime.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mma"));
             case TEXT -> text;
         };
-        // CHECKSTYLE.ON: Indentation
     }
 }
