@@ -67,8 +67,6 @@ public class Storage {
                     char type = firstLine.charAt(0);
                     boolean isDone = scanner.nextLine().charAt(0) == '1';
                     String description = scanner.nextLine().trim();
-                    // CHECKSTYLE.OFF: Indentation
-                    // Reason: Checkstyle configuration does not support lambda-style switch statements
                     Task task = switch (type) {
                         case 'T' -> new Todo(description);
                         case 'D' -> {
@@ -82,7 +80,6 @@ public class Storage {
                         }
                         default -> throw new InvalidFileFormatException();
                     };
-                    // CHECKSTYLE.ON: Indentation
                     if (isDone) {
                         task.markAsDone();
                     }

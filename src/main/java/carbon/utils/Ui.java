@@ -79,8 +79,6 @@ public class Ui {
             }
 
             try {
-                // CHECKSTYLE.OFF: Indentation
-                // Reason: checkstyle configuration does not support lambda-style switch statements
                 String message = switch (command) {
                     case "list" -> taskList.listTasks();
                     case "find" -> taskList.listTasks(arg);
@@ -93,7 +91,6 @@ public class Ui {
                     default -> throw new InvalidCommandException(
                             String.format("The command \"%s\" is not recognised", command));
                 };
-                // CHECKSTYLE.ON: Indentation
                 printMessage(message);
             } catch (InvalidCommandException | InvalidArgumentException e) {
                 printError(e.getMessage());
