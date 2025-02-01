@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * A GUI for Duke using FXML.
+ * A GUI for Carbon using FXML.
  */
 public class Main extends Application {
     private Carbon carbon = new Carbon();
@@ -22,7 +22,9 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setDuke(carbon);  // inject the Duke instance
+            stage.setMinHeight(220);
+            stage.setMinWidth(417);
+            fxmlLoader.<MainWindow>getController().setCarbon(carbon); // inject the Carbon instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
