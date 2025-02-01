@@ -35,6 +35,9 @@ public class MainWindow extends AnchorPane {
     /** Injects the Carbon instance */
     public void setCarbon(Carbon c) {
         carbon = c;
+        dialogContainer.getChildren().addAll(
+                DialogBox.getCarbonDialog(carbon.getResponse("start"), carbonImage)
+        );
     }
 
     /**
