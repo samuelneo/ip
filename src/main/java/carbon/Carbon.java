@@ -6,7 +6,7 @@ import carbon.utils.Ui;
  * Manages overall program logic.
  */
 public class Carbon {
-    private Ui ui;
+    private final Ui ui;
 
     /**
      * Creates a Carbon object.

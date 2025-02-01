@@ -67,10 +67,25 @@ public class DialogBox extends HBox {
         }
     }
 
+    /**
+     * Returns a DialogBox, formatted from the right, containing the given parameters.
+     *
+     * @param text Text to contain.
+     * @param img Image to contain.
+     * @return DialogBox object.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Returns a DialogBox, formatted from the left, containing the given parameters.
+     *
+     * @param text Text to contain.
+     * @param img Image to contain.
+     * @param command Command type.
+     * @return DialogBox object.
+     */
     public static DialogBox getCarbonDialog(String text, Image img, String command) {
         var db = new DialogBox(text, img);
         db.flip();

@@ -1,7 +1,5 @@
 package carbon.utils;
 
-import java.util.Scanner;
-
 import carbon.exceptions.InvalidArgumentException;
 import carbon.exceptions.InvalidCommandException;
 import carbon.task.TaskList;
@@ -12,7 +10,7 @@ import carbon.task.TaskList;
 public class Ui {
     private final TaskList taskList;
     private String mostRecentCommand;
-    private String startMessage;
+    private final String startMessage;
 
     /**
      * Creates a new UI process.

@@ -1,5 +1,7 @@
 package carbon.gui;
 
+import java.util.Objects;
+
 import carbon.Carbon;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -25,15 +27,22 @@ public class MainWindow extends AnchorPane {
 
     private Carbon carbon;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
-    private Image carbonImage = new Image(this.getClass().getResourceAsStream("/images/carbon.png"));
+    private final Image userImage = new Image(Objects.requireNonNull(
+            this.getClass().getResourceAsStream("/images/user.png")));
+    private final Image carbonImage = new Image(Objects.requireNonNull(
+            this.getClass().getResourceAsStream("/images/carbon.png")));
 
+    /**
+     * Initialises the window.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Carbon instance */
+    /**
+     * Injects the Carbon instance.
+     */
     public void setCarbon(Carbon c) {
         carbon = c;
         dialogContainer.getChildren().addAll(

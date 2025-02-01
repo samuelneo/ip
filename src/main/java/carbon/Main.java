@@ -13,8 +13,13 @@ import javafx.stage.Stage;
  * A GUI for Carbon using FXML.
  */
 public class Main extends Application {
-    private Carbon carbon = new Carbon();
+    private final Carbon carbon = new Carbon();
 
+    /**
+     * Starts the GUI.
+     *
+     * @param stage Stage to use.
+     */
     @Override
     public void start(Stage stage) {
         try {
