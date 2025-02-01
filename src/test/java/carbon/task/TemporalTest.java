@@ -1,8 +1,8 @@
 package carbon.task;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class TemporalTest {
     @Test
@@ -45,14 +45,14 @@ public class TemporalTest {
     @Test
     public void parse_invalid_textReturned() {
         String[] invalidTexts = {
-                "",
-                "hello",
-                "32 Jul 2024",
-                "13:00pm",
-                "25:00",
-                "1:60pm",
-                "13:60",
-                "1pm 1 Jul 2024"
+            "",
+            "hello",
+            "32 Jul 2024",
+            "13:00pm",
+            "25:00",
+            "1:60pm",
+            "13:60",
+            "1pm 1 Jul 2024"
         };
         for (String invalidText : invalidTexts) {
             assertEquals(invalidText, Temporal.parse(invalidText).toString());
