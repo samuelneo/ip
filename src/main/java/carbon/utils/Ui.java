@@ -1,7 +1,5 @@
 package carbon.utils;
 
-import java.util.Scanner;
-
 import carbon.exceptions.InvalidArgumentException;
 import carbon.exceptions.InvalidCommandException;
 import carbon.task.TaskList;
@@ -10,98 +8,68 @@ import carbon.task.TaskList;
  * Ui manages interactions with the user.
  */
 public class Ui {
-    private static final String LOGO = """
-                   ____           _
-                  / ___|__ _ _ __| |__   ___  _ __
-                 | |   / _` | '__| '_ \\ / _ \\| '_ \\
-                 | |__| (_| | |  | |_) | (_) | | | |
-                  \\____\\__,_|_|  |_.__/ \\___/|_| |_|""";
-    private static final String HORIZONTAL_LINE = "_".repeat(60);
     private final TaskList taskList;
+    private String mostRecentCommand;
+    private final String startMessage;
 
-    private Ui() {
+    /**
+     * Creates a new UI process.
+     */
+    public Ui() {
         this.taskList = new TaskList();
+        startMessage = Storage.loadDataFile(taskList) + "Hello! What can I do for you?";
+    }
+
+    private static String formatError(String message) {
+        return String.format("Oops! %s :(", message);
     }
 
     /**
-     * Starts a new Ui process.
-     */
-    public static void start() {
-        new Ui().run();
-    }
-
-    private void run() {
-        String loadDataMessage = Storage.loadDataFile(taskList);
-        printMessage(LOGO, loadDataMessage + "Hello! What can I do for you?");
-        inputLoop();
-        printMessage("Goodbye!");
-    }
-
-    /**
-     * Prints the message in between two horizontal lines.
-     * The lines are indented by 4 spaces, and the message is indented by 5 spaces.
+     * Returns the reply to the user input.
      *
-     * @param message Message to be printed.
+     * @param input User input.
+     * @return Reply.
      */
-    private static void printMessage(String... message) {
-        System.out.println("    " + HORIZONTAL_LINE);
-        for (String s : message) {
-            System.out.println("     " + s.replace("\n", "\n     "));
+    public String reply(String input) {
+        String[] words = input.trim().split(" ", 2);
+        mostRecentCommand = words[0].toLowerCase();
+        String arg = words.length > 1 ? words[1].trim() : "";
+
+        try {
+            return switch (mostRecentCommand) {
+                case "start" -> startMessage;
+                case "bye" -> "Goodbye!";
+                case "list" -> taskList.listTasks();
+                case "find" -> taskList.listTasks(arg);
+                case "mark" -> taskList.markTask(Integer.parseInt(arg) - 1);
+                case "unmark" -> taskList.unmarkTask(Integer.parseInt(arg) - 1);
+                case "todo" -> taskList.addTodo(arg);
+                case "deadline" -> taskList.addDeadline(arg);
+                case "event" -> taskList.addEvent(arg);
+                case "delete" -> taskList.deleteTask(Integer.parseInt(arg) - 1);
+                default -> throw new InvalidCommandException(
+                        String.format("The command \"%s\" is not recognised", mostRecentCommand));
+            };
+        } catch (InvalidCommandException | InvalidArgumentException e) {
+            return formatError(e.getMessage());
+        } catch (NumberFormatException e) {
+            return formatError(String.format("I expected a single integer after \"%s\"", mostRecentCommand));
+        } catch (IndexOutOfBoundsException e) {
+            String message = taskList.isEmpty()
+                    ? "You don't have any tasks!"
+                    : "Tasks are numbered from 1 to " + taskList.size();
+            return formatError(message);
         }
-        System.out.println("    " + HORIZONTAL_LINE + "\n");
     }
 
     /**
-     * Prints the error message in between two horizontal lines.
-     * The lines are indented by 4 spaces, and the message is indented by 5 spaces,
-     * preceded with "Oops!" and followed with ":(".
+     * Returns the most recent command as a String in lowercase.
+     * The command is the first word of the user's message.
+     * If no command has been entered, "start" is returned.
      *
-     * @param message Error message to be printed.
+     * @return Most recent command.
      */
-    private static void printError(String message) {
-        printMessage(String.format("Oops! %s :(", message));
-    }
-
-    /**
-     * Processes user commands until they enter "bye".
-     */
-    private void inputLoop() {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            String input = scanner.nextLine().trim();
-            String[] words = input.split(" ", 2);
-            String command = words[0].toLowerCase();
-            String arg = words.length > 1 ? words[1].trim() : "";
-
-            if (command.equals("bye")) {
-                return;
-            }
-
-            try {
-                String message = switch (command) {
-                    case "list" -> taskList.listTasks();
-                    case "find" -> taskList.listTasks(arg);
-                    case "mark" -> taskList.markTask(Integer.parseInt(arg) - 1);
-                    case "unmark" -> taskList.unmarkTask(Integer.parseInt(arg) - 1);
-                    case "todo" -> taskList.addTodo(arg);
-                    case "deadline" -> taskList.addDeadline(arg);
-                    case "event" -> taskList.addEvent(arg);
-                    case "delete" -> taskList.deleteTask(Integer.parseInt(arg) - 1);
-                    default -> throw new InvalidCommandException(
-                            String.format("The command \"%s\" is not recognised", command));
-                };
-                printMessage(message);
-            } catch (InvalidCommandException | InvalidArgumentException e) {
-                printError(e.getMessage());
-            } catch (NumberFormatException e) {
-                printError(String.format("I expected a single integer after \"%s\"", command));
-            } catch (IndexOutOfBoundsException e) {
-                String message = taskList.isEmpty()
-                        ? "You don't have any tasks!"
-                        : "Tasks are numbered from 1 to " + taskList.size();
-                printError(message);
-            }
-        }
+    public String getMostRecentCommand() {
+        return mostRecentCommand;
     }
 }
