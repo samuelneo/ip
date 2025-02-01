@@ -44,7 +44,7 @@ test {
 }
 
 application {
-    mainClass.set("carbon.Carbon")
+    mainClass.set("carbon.Launcher")
 }
 
 shadowJar {

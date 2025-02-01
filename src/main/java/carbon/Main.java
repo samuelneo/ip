@@ -1,17 +1,31 @@
 package carbon;
 
+import java.io.IOException;
+
+import carbon.gui.MainWindow;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * A GUI for Duke using FXML.
+ */
 public class Main extends Application {
+    private Carbon carbon = new Carbon();
+
     @Override
     public void start(Stage stage) {
-        Label helloWorld = new Label("Hello World!");
-        Scene scene = new Scene(helloWorld);
-
-        stage.setScene(scene);
-        stage.show();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
+            AnchorPane ap = fxmlLoader.load();
+            Scene scene = new Scene(ap);
+            stage.setScene(scene);
+            fxmlLoader.<MainWindow>getController().setDuke(carbon);  // inject the Duke instance
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
