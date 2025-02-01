@@ -1,6 +1,13 @@
 .label {
-    -fx-background-color: linear-gradient(to bottom right, #800040, #4d004d);
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
+    top-left: #800040;
+    bottom-right: #4d004d;
+
+    -fx-background-color: linear-gradient(to bottom right, top-left, bottom-right);
+    -fx-border-color: derive(top-left, 20%)
+            derive(bottom-right, 10%)
+            derive(bottom-right, -30%)
+            derive(top-left, -10%);
+
     -fx-border-width: 2px;
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
@@ -8,9 +15,26 @@
 }
 
 .reply-label {
-    -fx-background-color: linear-gradient(to bottom right, #006666, #004466);
+    top-left: #006666;
+    bottom-right: #004466;
+
     -fx-background-radius: 1em 1em 1em 0;
     -fx-border-radius: 1em 1em 1em 0;
+}
+
+.add-label {
+    top-left: #a97c0a;
+    bottom-right: #805c15;
+}
+
+.marked-label {
+    top-left: #0e690f;
+    bottom-right: #0a4d0b;
+}
+
+.delete-label {
+    top-left: #730d1a;
+    bottom-right: #571020;
 }
 
 #displayPicture {

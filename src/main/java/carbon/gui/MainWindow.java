@@ -1,6 +1,7 @@
 package carbon.gui;
 
 import carbon.Carbon;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -36,7 +37,7 @@ public class MainWindow extends AnchorPane {
     public void setCarbon(Carbon c) {
         carbon = c;
         dialogContainer.getChildren().addAll(
-                DialogBox.getCarbonDialog(carbon.getResponse("start"), carbonImage)
+                DialogBox.getCarbonDialog(carbon.getResponse("start"), carbonImage, "start")
         );
     }
 
@@ -48,10 +49,15 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = carbon.getResponse(input);
+        String command = carbon.getCommand();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getCarbonDialog(response, carbonImage)
+                DialogBox.getCarbonDialog(response, carbonImage, command)
         );
         userInput.clear();
+
+        if (command.equals("bye")) {
+            Platform.exit();
+        }
     }
 }

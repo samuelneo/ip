@@ -5,17 +5,17 @@
 
 .text-field {
     -fx-background-color: #382e35;
-    -fx-font: 20px "Arial";
+    -fx-font: 20px "Trebuchet MS";
     -fx-text-fill: white;
 }
 
 .button {
-    -fx-background-color: mediumspringgreen;
-    -fx-font: bold 16px "Arial";
+    -fx-background-color: #d3a912;
+    -fx-font: bold 16px "Trebuchet MS";
 }
 
 .button:hover {
-    -fx-background-color:cyan;
+    -fx-background-color: #ecbd13;
 }
 
 .button:pressed {
@@ -33,7 +33,7 @@
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #ff9cb4;
+    -fx-background-color: #ffccd9;
     -fx-background-radius: 1em;
 }
 

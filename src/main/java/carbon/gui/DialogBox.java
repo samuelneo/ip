@@ -49,13 +49,32 @@ public class DialogBox extends HBox {
         dialog.getStyleClass().add("reply-label");
     }
 
+    private void changeDialogStyle(String commandType) {
+        switch(commandType) {
+        case "todo":
+        case "deadline":
+        case "event":
+            dialog.getStyleClass().add("add-label");
+            break;
+        case "mark":
+            dialog.getStyleClass().add("marked-label");
+            break;
+        case "delete":
+            dialog.getStyleClass().add("delete-label");
+            break;
+        default:
+            // Do nothing
+        }
+    }
+
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
-    public static DialogBox getCarbonDialog(String text, Image img) {
+    public static DialogBox getCarbonDialog(String text, Image img, String command) {
         var db = new DialogBox(text, img);
         db.flip();
+        db.changeDialogStyle(command);
         return db;
     }
 }
