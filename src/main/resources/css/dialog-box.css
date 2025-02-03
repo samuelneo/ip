@@ -24,8 +24,8 @@
 }
 
 .add-label {
-    top-left: #9e6b13;
-    bottom-right: #7a550d;
+    top-left: #b55132;
+    bottom-right: #a13d36;
 }
 
 .marked-label {
@@ -34,6 +34,11 @@
 }
 
 .delete-label {
+    top-left: #a67116;
+    bottom-right: #835c0f;
+}
+
+.error-label {
     top-left: #811b27;
     bottom-right: #5e0c19;
 }

@@ -20,7 +20,8 @@ public class Ui {
         startMessage = Storage.loadDataFile(taskList) + "Hello! What can I do for you?";
     }
 
-    private static String formatError(String message) {
+    private String formatError(String message) {
+        mostRecentCommand = "error";
         return String.format("Oops! %s :(", message);
     }
 
@@ -65,6 +66,7 @@ public class Ui {
     /**
      * Returns the most recent command as a String in lowercase.
      * The command is the first word of the user's message.
+     * If user's message triggered an error, "error" is returned.
      * If no command has been entered, "start" is returned.
      *
      * @return Most recent command.

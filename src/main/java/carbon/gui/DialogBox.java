@@ -50,7 +50,7 @@ public class DialogBox extends HBox {
     }
 
     private void changeDialogStyle(String commandType) {
-        switch(commandType) {
+        switch (commandType) {
         case "todo":
         case "deadline":
         case "event":
@@ -61,6 +61,9 @@ public class DialogBox extends HBox {
             break;
         case "delete":
             dialog.getStyleClass().add("delete-label");
+            break;
+        case "error":
+            dialog.getStyleClass().add("error-label");
             break;
         default:
             // Do nothing
