@@ -26,12 +26,12 @@ public class Parser {
     public static Deadline parseDeadline(String text) {
         // Regex matches a String of the form "{A} /by {B}", where A and B each contain at least
         // one non-whitespace character
-        Matcher matcher = Pattern.compile("^(.*\\S.*) /by (.*\\S.*)$").matcher(text);
+        Matcher matcher = Pattern.compile("^\\s*(\\S.*?)\\s+/by\\s+(\\S.*?)\\s*$").matcher(text);
         if (!matcher.find()) {
             throw new InvalidArgumentException(
                     "Deadline commands should be formatted as \"deadline [description] /by [due date/time]\"");
         }
-        return new Deadline(matcher.group(1).trim(), matcher.group(2).trim());
+        return new Deadline(matcher.group(1), matcher.group(2));
     }
 
     /**
@@ -49,11 +49,12 @@ public class Parser {
     public static Event parseEvent(String text) {
         // Regex matches a String of the form "{A} /from {B} /to {C}", where A, B, and C each
         // contain at least one non-whitespace character
-        Matcher matcher = Pattern.compile("^(.*\\S.*) /from (.*\\S.*) /to (.*\\S.*)$").matcher(text);
+        Matcher matcher = Pattern.compile("^\\s*(\\S.*?)\\s+/from\\s+(\\S.*?)\\s+/to\\s+(\\S.*?)\\s*$")
+                .matcher(text);
         if (!matcher.find()) {
             throw new InvalidArgumentException(
                     "Event commands should be formatted as \"event [description] /from [start] /to [end]\"");
         }
-        return new Event(matcher.group(1).trim(), matcher.group(2).trim(), matcher.group(3).trim());
+        return new Event(matcher.group(1), matcher.group(2), matcher.group(3));
     }
 }
