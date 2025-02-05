@@ -10,14 +10,14 @@ import carbon.task.TaskList;
 public class Ui {
     private final TaskList taskList;
     private String mostRecentCommand;
-    private final String startMessage;
+    private final String welcomeMessage;
 
     /**
      * Creates a new UI process.
      */
     public Ui() {
         this.taskList = new TaskList();
-        startMessage = Storage.loadDataFile(taskList) + "Hello! What can I do for you?";
+        welcomeMessage = Storage.loadDataFile(taskList) + "Hello! What can I do for you?";
     }
 
     private String formatError(String message) {
@@ -38,7 +38,7 @@ public class Ui {
 
         try {
             return switch (mostRecentCommand) {
-                case "start" -> startMessage;
+                case "start" -> welcomeMessage;
                 case "bye" -> "Goodbye!";
                 case "list" -> taskList.listTasks();
                 case "find" -> taskList.listTasks(arg);

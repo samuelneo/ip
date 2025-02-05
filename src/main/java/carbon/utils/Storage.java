@@ -49,14 +49,14 @@ public class Storage {
         if (!dataFile.getParentFile().exists() && !dataFile.getParentFile().mkdirs()) {
             throw new RuntimeException("Unable to create data/user/ directory");
         }
-        boolean fileExists;
+        boolean hasFile;
         try {
-            fileExists = !dataFile.createNewFile();
+            hasFile = !dataFile.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        if (fileExists) {
+        if (hasFile) {
             try {
                 Scanner scanner = new Scanner(dataFile);
                 while (scanner.hasNextLine()) {
