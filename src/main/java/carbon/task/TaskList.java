@@ -1,6 +1,7 @@
 package carbon.task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -12,6 +13,7 @@ import carbon.utils.Storage;
  * A TaskList manages a list of tasks.
  */
 public class TaskList {
+    private static final String NO_TASKS_MESSAGE = "You don't have any tasks! :)";
     private final ArrayList<Task> tasks;
 
     /**
@@ -30,9 +32,10 @@ public class TaskList {
      */
     public String listTasks() {
         if (tasks.isEmpty()) {
-            return "You don't have any tasks! :)";
+            return NO_TASKS_MESSAGE;
         }
-        return "Tasks:\n" + IntStream.range(0, tasks.size())
+        return String.format("You have %d task%s:\n", tasks.size(), tasks.size() != 1 ? "s" : "")
+                + IntStream.range(0, tasks.size())
                 .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
                 .collect(Collectors.joining("\n"));
     }
@@ -54,7 +57,7 @@ public class TaskList {
             throw new InvalidArgumentException("I expected some text after \"find\"");
         }
         if (tasks.isEmpty()) {
-            return "You don't have any tasks! :)";
+            return NO_TASKS_MESSAGE;
         }
 
         return IntStream.range(0, tasks.size())
@@ -70,6 +73,24 @@ public class TaskList {
                                 results.size() == 1 ? "s" : "",
                                 filter) + String.join("\n", results)
                 ));
+    }
+
+    /**
+     * Sorts the TaskList, then returns a String that lists all tasks in the TaskList.
+     *
+     * @return String representing the TaskList.
+     * @see Task
+     * @see Temporal
+     */
+    public String sortTasks() {
+        if (tasks.isEmpty()) {
+            return NO_TASKS_MESSAGE;
+        }
+
+        Collections.sort(tasks);
+        Storage.updateDataFile(tasks);
+
+        return "Tasks sorted!\n" + listTasks();
     }
 
     /**

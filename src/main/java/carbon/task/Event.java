@@ -29,6 +29,15 @@ public class Event extends Task {
 
     /**
      * {@inheritDoc}
+     * An Event's datetime is that of its start date/time.
+     */
+    @Override
+    public Temporal toDateTime() {
+        return start;
+    }
+
+    /**
+     * {@inheritDoc}
      * Additionally, the start and end date/time is included.
      */
     @Override

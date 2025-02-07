@@ -91,6 +91,16 @@ public class Temporal implements Comparable<Temporal> {
     }
 
     /**
+     * Returns a new datetime-type Temporal object representing the specified datetime.
+     *
+     * @param dateTime Datetime of the Temporal object.
+     * @return Datetime-type Temporal object.
+     */
+    public static Temporal of(LocalDateTime dateTime) {
+        return new Temporal(dateTime);
+    }
+
+    /**
      * Returns the input String, capitalising "am"/"pm" at the end of the String (if applicable).
      * <p>
      * DateTimeFormatter looks for capital "AM"/"PM", hence this is necessary for parsing.
