@@ -48,6 +48,7 @@ public class Ui {
                 case "deadline" -> taskList.addDeadline(arg);
                 case "event" -> taskList.addEvent(arg);
                 case "delete" -> taskList.deleteTask(Integer.parseInt(arg) - 1);
+                case "sort" -> taskList.sortTasks();
                 default -> throw new InvalidCommandException(
                         String.format("The command \"%s\" is not recognised", mostRecentCommand));
             };

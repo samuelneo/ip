@@ -21,10 +21,28 @@ public class Event extends Task {
     }
 
     /**
+     * Returns the start date/time.
+     *
+     * @return Start date/time.
+     */
+    public Temporal getStart() {
+        return start;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public String getStorageText() {
         return super.getStorageText() + "\n" + start + "\n" + end;
+    }
+
+    /**
+     * {@inheritDoc}
+     * An Event's datetime is that of its start date/time.
+     */
+    @Override
+    public Temporal toDateTime() {
+        return start;
     }
 
     /**

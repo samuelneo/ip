@@ -19,6 +19,15 @@ public class Deadline extends Task {
 
     /**
      * {@inheritDoc}
+     * A Deadline's datetime is that of its due date/time.
+     */
+    @Override
+    public Temporal toDateTime() {
+        return dueBy;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public String getStorageText() {
         return super.getStorageText() + "\n" + dueBy;

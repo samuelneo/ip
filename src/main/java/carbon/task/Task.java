@@ -4,7 +4,7 @@ package carbon.task;
  * Task is an entry in the task list.
  * Each Task has a description and a completion status (isDone).
  */
-public abstract class Task {
+public abstract class Task implements Comparable<Task> {
     protected final char type;
     protected String description;
     protected boolean isDone;
@@ -68,5 +68,24 @@ public abstract class Task {
     @Override
     public String toString() {
         return String.format("[%s][%s] %s", type, getStatusIcon(), description);
+    }
+
+    /**
+     * Returns a Temporal representing the datetime of the task.
+     *
+     * @return Temporal representing the datetime of the task.
+     */
+    public abstract Temporal toDateTime();
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * A Todo is considered to have a date/time greater than non-Todo tasks.
+     * A Deadline is compared by its due date/time.
+     * An Event is compared by its start date/time.
+     */
+    @Override
+    public int compareTo(Task other) {
+        return toDateTime().compareTo(other.toDateTime());
     }
 }
