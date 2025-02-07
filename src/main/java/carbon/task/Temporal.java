@@ -168,6 +168,15 @@ public class Temporal implements Comparable<Temporal> {
         return temporal;
     }
 
+    private LocalDateTime toDateTime() {
+        return switch (type) {
+            case DATE -> date.atStartOfDay();
+            case TIME -> time.atDate(LocalDate.now());
+            case DATETIME -> dateTime;
+            case TEXT -> throw new IllegalStateException();
+        };
+    }
+
     /**
      * {@inheritDoc}
      * <p>
@@ -184,18 +193,8 @@ public class Temporal implements Comparable<Temporal> {
             return -1;
         }
 
-        LocalDateTime thisDateTime = switch (type) {
-            case DATE -> date.atStartOfDay();
-            case TIME -> time.atDate(LocalDate.now());
-            case DATETIME -> dateTime;
-            case TEXT -> throw new IllegalStateException();
-        };
-        LocalDateTime otherDateTime = switch (other.type) {
-            case DATE -> other.date.atStartOfDay();
-            case TIME -> other.time.atDate(LocalDate.now());
-            case DATETIME -> other.dateTime;
-            case TEXT -> throw new IllegalStateException();
-        };
+        LocalDateTime thisDateTime = toDateTime();
+        LocalDateTime otherDateTime = other.toDateTime();
         return thisDateTime.compareTo(otherDateTime);
     }
 
