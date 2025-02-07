@@ -52,6 +52,7 @@ public class Ui {
                         String.format("The command \"%s\" is not recognised", mostRecentCommand));
             };
         } catch (InvalidCommandException | InvalidArgumentException e) {
+            assert !e.getMessage().isBlank() : "Exception should have a message";
             return formatError(e.getMessage());
         } catch (NumberFormatException e) {
             return formatError(String.format("I expected a single integer after \"%s\"", mostRecentCommand));
