@@ -17,9 +17,12 @@ public class TemporalTest {
     @Test
     public void parse_validTime_success() {
         assertEquals("1:00pm", Temporal.parse("1:00pm").toString());
+        assertEquals("1:00pm", Temporal.parse("1:00PM").toString());
         assertEquals("1:00pm", Temporal.parse("1pm").toString());
+        assertEquals("1:00pm", Temporal.parse("1PM").toString());
         assertEquals("1:00pm", Temporal.parse("13:00").toString());
         assertEquals("1:15pm", Temporal.parse("1:15pm").toString());
+        assertEquals("1:15pm", Temporal.parse("1:15PM").toString());
         assertEquals("1:15pm", Temporal.parse("13:15").toString());
     }
 

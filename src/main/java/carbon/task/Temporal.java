@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
+import java.util.stream.Stream;
 
 /**
  * A Temporal stores an object that fits into one of the following categories:
@@ -23,39 +25,44 @@ public class Temporal implements Comparable<Temporal> {
         TEXT
     }
 
-    private static final DateTimeFormatter[] DATE_FORMATTERS = {
-            DateTimeFormatter.ofPattern("d/M/yyyy"),
-            DateTimeFormatter.ofPattern("yyyy/M/d"),
-            DateTimeFormatter.ofPattern("d-M-yyyy"),
-            DateTimeFormatter.ofPattern("yyyy-M-d"),
-            DateTimeFormatter.ofPattern("d MMM yyyy"),
-            DateTimeFormatter.ofPattern("yyyy MMM d")
-    };
-    private static final DateTimeFormatter[] TIME_FORMATTERS = {
-            DateTimeFormatter.ofPattern("H:mm"),
-            DateTimeFormatter.ofPattern("h:mma"),
-            DateTimeFormatter.ofPattern("ha")
-    };
-    private static final DateTimeFormatter[] DATE_TIME_FORMATTERS = {
-            DateTimeFormatter.ofPattern("d/M/yyyy H:mm"),
-            DateTimeFormatter.ofPattern("yyyy/M/d H:mm"),
-            DateTimeFormatter.ofPattern("d-M-yyyy H:mm"),
-            DateTimeFormatter.ofPattern("yyyy-M-d H:mm"),
-            DateTimeFormatter.ofPattern("d MMM yyyy H:mm"),
-            DateTimeFormatter.ofPattern("yyyy MMM d H:mm"),
-            DateTimeFormatter.ofPattern("d/M/yyyy h:mma"),
-            DateTimeFormatter.ofPattern("yyyy/M/d h:mma"),
-            DateTimeFormatter.ofPattern("d-M-yyyy h:mma"),
-            DateTimeFormatter.ofPattern("yyyy-M-d h:mma"),
-            DateTimeFormatter.ofPattern("d MMM yyyy h:mma"),
-            DateTimeFormatter.ofPattern("yyyy MMM d h:mma"),
-            DateTimeFormatter.ofPattern("d/M/yyyy ha"),
-            DateTimeFormatter.ofPattern("yyyy/M/d ha"),
-            DateTimeFormatter.ofPattern("d-M-yyyy ha"),
-            DateTimeFormatter.ofPattern("yyyy-M-d ha"),
-            DateTimeFormatter.ofPattern("d MMM yyyy ha"),
-            DateTimeFormatter.ofPattern("yyyy MMM d ha")
-    };
+    // US Locale is specified to be consistent across different operating systems
+    // See https://stackoverflow.com/questions/70059067/is-datetimeformatter-operating-system-dependent
+    // for more info
+    private static final DateTimeFormatter[] DATE_FORMATTERS = Stream.of(
+            "d/M/yyyy",
+            "yyyy/M/d",
+            "d-M-yyyy",
+            "yyyy-M-d",
+            "d MMM yyyy",
+            "yyyy MMM d"
+    ).map(x -> DateTimeFormatter.ofPattern(x).withLocale(Locale.US)).toArray(DateTimeFormatter[]::new);
+
+    private static final DateTimeFormatter[] TIME_FORMATTERS = Stream.of(
+            "H:mm",
+            "h:mma",
+            "ha"
+    ).map(x -> DateTimeFormatter.ofPattern(x).withLocale(Locale.US)).toArray(DateTimeFormatter[]::new);
+
+    private static final DateTimeFormatter[] DATE_TIME_FORMATTERS = Stream.of(
+            "d/M/yyyy H:mm",
+            "yyyy/M/d H:mm",
+            "d-M-yyyy H:mm",
+            "yyyy-M-d H:mm",
+            "d MMM yyyy H:mm",
+            "yyyy MMM d H:mm",
+            "d/M/yyyy h:mma",
+            "yyyy/M/d h:mma",
+            "d-M-yyyy h:mma",
+            "yyyy-M-d h:mma",
+            "d MMM yyyy h:mma",
+            "yyyy MMM d h:mma",
+            "d/M/yyyy ha",
+            "yyyy/M/d ha",
+            "d-M-yyyy ha",
+            "yyyy-M-d ha",
+            "d MMM yyyy ha",
+            "yyyy MMM d ha"
+    ).map(x -> DateTimeFormatter.ofPattern(x).withLocale(Locale.US)).toArray(DateTimeFormatter[]::new);
 
     private final TemporalType type;
     private LocalDate date;
@@ -84,6 +91,26 @@ public class Temporal implements Comparable<Temporal> {
     }
 
     /**
+     * Returns the input String, capitalising "am"/"pm" at the end of the String (if applicable).
+     * <p>
+     * DateTimeFormatter looks for capital "AM"/"PM", hence this is necessary for parsing.
+     *
+     * @param text Input String, possibly ending in "am"/"pm".
+     * @return String with ending "am"/"pm" capitalised.
+     */
+    private static String capitaliseAmPm(String text) {
+        return text.endsWith("am") || text.endsWith("pm")
+                ? text.substring(0, text.length() - 2) + text.substring(text.length() - 2).toUpperCase()
+                : text;
+    }
+
+    private static String decapitaliseAmPm(String text) {
+        return text.endsWith("AM") || text.endsWith("PM")
+                ? text.substring(0, text.length() - 2) + text.substring(text.length() - 2).toLowerCase()
+                : text;
+    }
+
+    /**
      * Parses text into a date-type Temporal object.
      *
      * @param text Text to be parsed.
@@ -109,6 +136,8 @@ public class Temporal implements Comparable<Temporal> {
      * @return A time-type Temporal if possible, <code>null</code> otherwise.
      */
     public static Temporal parseToTime(String text) {
+        text = capitaliseAmPm(text);
+
         for (DateTimeFormatter formatter : TIME_FORMATTERS) {
             try {
                 LocalTime time = LocalTime.parse(text, formatter);
@@ -128,6 +157,8 @@ public class Temporal implements Comparable<Temporal> {
      * @return A datetime-type Temporal if possible, <code>null</code> otherwise.
      */
     public static Temporal parseToDateTime(String text) {
+        text = capitaliseAmPm(text);
+
         for (DateTimeFormatter formatter : DATE_TIME_FORMATTERS) {
             try {
                 LocalDateTime dateTime = LocalDateTime.parse(text, formatter);
@@ -207,8 +238,8 @@ public class Temporal implements Comparable<Temporal> {
     public String toString() {
         return switch (type) {
             case DATE -> date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
-            case TIME -> time.format(DateTimeFormatter.ofPattern("h:mma"));
-            case DATETIME -> dateTime.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mma"));
+            case TIME -> decapitaliseAmPm(time.format(DateTimeFormatter.ofPattern("h:mma")));
+            case DATETIME -> decapitaliseAmPm(dateTime.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mma")));
             case TEXT -> text;
         };
     }
