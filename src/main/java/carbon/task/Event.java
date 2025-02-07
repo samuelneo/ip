@@ -21,15 +21,6 @@ public class Event extends Task {
     }
 
     /**
-     * Returns the start date/time.
-     *
-     * @return Start date/time.
-     */
-    public Temporal getStart() {
-        return start;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public String getStorageText() {
