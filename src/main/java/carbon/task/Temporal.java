@@ -25,7 +25,7 @@ public class Temporal implements Comparable<Temporal> {
         TEXT
     }
 
-    // US Locale is specified to be consistent across different operating systems
+    // US Locale is specified in order to be consistent across different operating systems
     // See https://stackoverflow.com/questions/70059067/is-datetimeformatter-operating-system-dependent
     // for more info
     private static final DateTimeFormatter[] DATE_FORMATTERS = Stream.of(
