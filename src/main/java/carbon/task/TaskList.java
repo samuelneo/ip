@@ -137,8 +137,8 @@ public class TaskList {
      */
     public String formatTask(Task task) {
         boolean isPlural = tasks.size() != 1;
-        return "   " + task.toString() + "\n"
-                + String.format("You now have %d task%s.", tasks.size(), isPlural ? "s" : "");
+        return String.format("   %s\nYou now have %d task%s.",
+                task.toString(), tasks.size(), isPlural ? "s" : "");
     }
 
     private String addTask(Task task) {
@@ -160,7 +160,7 @@ public class TaskList {
         Task task = tasks.get(index);
         String message = task.isDone()
                 ? String.format("Task #%d is already done (no changes made).", index + 1)
-                : "Marked as done:";
+                : "Nice! Marked as done:";
         task.markAsDone();
         Storage.updateDataFile(tasks);
         return message + "\n   " + tasks.get(index);
