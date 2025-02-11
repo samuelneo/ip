@@ -18,6 +18,14 @@ public class Event extends Task {
         super('E', description);
         this.start = Temporal.parse(start);
         this.end = Temporal.parse(end);
+
+        if (this.start.compareTo(this.end) > 0) {
+            warningMessage = "\nWARNING: Start date/time is after end date/time.";
+        }
+
+        if (this.start.getType() == TemporalType.TEXT || this.end.getType() == TemporalType.TEXT) {
+            warningMessage += "\n" + Temporal.TEMPORAL_PARSE_WARNING;
+        }
     }
 
     /**

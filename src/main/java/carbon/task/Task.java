@@ -8,6 +8,7 @@ public abstract class Task implements Comparable<Task> {
     protected final char type;
     protected String description;
     protected boolean isDone;
+    protected String warningMessage = "";
 
     /**
      * Creates an Task with the specified description.

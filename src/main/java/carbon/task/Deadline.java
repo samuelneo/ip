@@ -15,6 +15,10 @@ public class Deadline extends Task {
     public Deadline(String description, String dueBy) {
         super('D', description);
         this.dueBy = Temporal.parse(dueBy);
+
+        if (this.dueBy.getType() == TemporalType.TEXT) {
+            warningMessage = "\n" + Temporal.TEMPORAL_PARSE_WARNING;
+        }
     }
 
     /**

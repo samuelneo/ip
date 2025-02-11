@@ -10,7 +10,7 @@ import carbon.task.TaskList;
 public class Ui {
     private static final String helpMessage = """
             Here are the list of commands:
-            
+
             help - Displays this help message.
             bye - Quits the program.
             list - Lists all tasks.

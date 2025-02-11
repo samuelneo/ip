@@ -18,6 +18,10 @@ import java.util.stream.Stream;
  * </ul>
  */
 public class Temporal implements Comparable<Temporal> {
+    public static final String TEMPORAL_PARSE_WARNING = "WARNING: Date/time could not be parsed, "
+            + "please enter in the format \"YYYY-MM-DD HH24:MI\" "
+            + "in order for features such as sorting to function accurately.";
+
     // US Locale is specified in order to be consistent across different operating systems
     // See https://stackoverflow.com/questions/70059067/is-datetimeformatter-operating-system-dependent
     // for more info
@@ -91,6 +95,15 @@ public class Temporal implements Comparable<Temporal> {
      */
     public static Temporal of(LocalDateTime dateTime) {
         return new Temporal(dateTime);
+    }
+
+    /**
+     * Returns the TemporalType used for this Temporal object.
+     *
+     * @return TemporalType used for this Temporal object.
+     */
+    public TemporalType getType() {
+        return type;
     }
 
     /**

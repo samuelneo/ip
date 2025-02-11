@@ -144,7 +144,7 @@ public class TaskList {
     private String addTask(Task task) {
         tasks.add(task);
         Storage.updateDataFile(tasks);
-        return "Added:\n" + formatTask(task);
+        return "Added:\n" + formatTask(task) + task.warningMessage;
     }
 
     /**
