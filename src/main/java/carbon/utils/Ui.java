@@ -12,6 +12,22 @@ public class Ui {
     private String mostRecentCommand;
     private final String welcomeMessage;
 
+    private final String helpMessage = """
+            Here are the list of commands:
+            
+            help - Displays this help message.
+            bye - Quits the program.
+            list - Lists all tasks.
+            find [text] - Lists all tasks containing [text].
+            mark [number] - Marks task [number] as done.
+            unmark [number] - Marks task [number] as not done.
+            todo [description] - Adds a Todo task.
+            deadline [description] /by [date/time] - Adds a Deadline task.
+            event [description] /from [date/time] to [date/time] - Adds an Event task.
+            delete [number] - Deletes task [number].
+            sort - Sorts tasks by their specified date/time.
+            """;
+
     /**
      * Creates a new UI process.
      */
@@ -39,6 +55,7 @@ public class Ui {
         try {
             return switch (mostRecentCommand) {
                 case "start" -> welcomeMessage;
+                case "help" -> helpMessage;
                 case "bye" -> "Goodbye!";
                 case "list" -> taskList.listTasks();
                 case "find" -> taskList.listTasks(arg);
