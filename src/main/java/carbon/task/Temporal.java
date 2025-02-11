@@ -18,13 +18,6 @@ import java.util.stream.Stream;
  * </ul>
  */
 public class Temporal implements Comparable<Temporal> {
-    enum TemporalType {
-        DATE,
-        TIME,
-        DATETIME,
-        TEXT
-    }
-
     // US Locale is specified in order to be consistent across different operating systems
     // See https://stackoverflow.com/questions/70059067/is-datetimeformatter-operating-system-dependent
     // for more info
