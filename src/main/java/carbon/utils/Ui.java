@@ -8,11 +8,7 @@ import carbon.task.TaskList;
  * Ui manages interactions with the user.
  */
 public class Ui {
-    private final TaskList taskList;
-    private String mostRecentCommand;
-    private final String welcomeMessage;
-
-    private final String helpMessage = """
+    private static final String helpMessage = """
             Here are the list of commands:
             
             help - Displays this help message.
@@ -27,6 +23,10 @@ public class Ui {
             delete [number] - Deletes task [number].
             sort - Sorts tasks by their specified date/time.
             """;
+
+    private final TaskList taskList;
+    private String mostRecentCommand;
+    private final String welcomeMessage;
 
     /**
      * Creates a new UI process.
