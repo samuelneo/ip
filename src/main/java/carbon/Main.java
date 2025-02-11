@@ -1,11 +1,13 @@
 package carbon;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import carbon.gui.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -30,6 +32,8 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
             fxmlLoader.<MainWindow>getController().setCarbon(carbon); // inject the Carbon instance
+            stage.getIcons().add(new Image(Objects.requireNonNull(
+                    Main.class.getResourceAsStream("/images/carbon.png"))));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
