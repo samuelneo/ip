@@ -258,7 +258,7 @@ public class TaskList {
      * @return Message representing the changes made.
      * @throws IndexOutOfBoundsException If <code>index</code> is out of bounds.
      */
-    private String deleteTask(int index) {
+    protected String deleteTask(int index) {
         Task task = tasks.remove(index);
         Storage.updateDataFile(tasks);
         return "Deleted the following task:\n" + formatTask(task);
@@ -269,7 +269,7 @@ public class TaskList {
      *
      * @return Message representing the changes made.
      */
-    private String deleteMarked() {
+    protected String deleteMarked() {
         List<Integer> list = IntStream.range(0, tasks.size())
                 .filter(i -> tasks.get(i).isDone())
                 .boxed()
