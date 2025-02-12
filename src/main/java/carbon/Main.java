@@ -34,6 +34,7 @@ public class Main extends Application {
             fxmlLoader.<MainWindow>getController().setCarbon(carbon); // inject the Carbon instance
             stage.getIcons().add(new Image(Objects.requireNonNull(
                     Main.class.getResourceAsStream("/images/carbon.png"))));
+            stage.setTitle("Carbon");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
