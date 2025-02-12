@@ -12,7 +12,7 @@
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
     -fx-text-fill: white;
-    -fx-font-family: "Trebuchet MS";
+    -fx-font: 16px "Trebuchet MS";
 }
 
 .reply-label {

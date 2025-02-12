@@ -2,6 +2,8 @@ package carbon.task;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -234,15 +236,59 @@ public class TaskList {
     }
 
     /**
+     * Deletes either a task from the TaskList, or all marked tasks.
+     * Performs the former if <code>arg</code> is an int.
+     * Performs the latter if <code>arg</code> has the value "marked".
+     *
+     * @param arg Argument specified by the user
+     * @return Message representing the changes made.
+     * @throws IndexOutOfBoundsException If <code>arg</code> is parsed as an int and is out of bounds.
+     * @throws NumberFormatException If <code>arg</code> is not "marked" and cannot be parsed as an int.
+     */
+    public String delete(String arg) {
+        return arg.equalsIgnoreCase("marked")
+                ? deleteMarked()
+                : deleteTask(Integer.parseInt(arg) - 1);
+    }
+
+    /**
      * Deletes a task from the TaskList.
      *
      * @param index Index of the task in the TaskList to delete.
      * @return Message representing the changes made.
      * @throws IndexOutOfBoundsException If <code>index</code> is out of bounds.
      */
-    public String deleteTask(int index) {
+    private String deleteTask(int index) {
         Task task = tasks.remove(index);
         Storage.updateDataFile(tasks);
         return "Deleted the following task:\n" + formatTask(task);
+    }
+
+    /**
+     * Deletes all marked tasks from the TaskList.
+     *
+     * @return Message representing the changes made.
+     */
+    private String deleteMarked() {
+        List<Integer> list = IntStream.range(0, tasks.size())
+                .filter(i -> tasks.get(i).isDone())
+                .boxed()
+                .toList();
+
+        if (list.isEmpty()) {
+            return "You don't have any marked tasks.";
+        }
+
+        String result = list.stream()
+                .map(i -> (i + 1) + ". " + tasks.get(i))
+                .collect(Collectors.joining("\n"));
+
+        // Sort indices in reversed order so that deletion occurs from the back
+        list.stream().sorted(Comparator.reverseOrder())
+                .mapToInt(x -> x) // transforms to primitive IntStream
+                .forEach(tasks::remove); // remove would call the wrong method for Stream<Integer>
+
+        Storage.updateDataFile(tasks);
+        return "Deleted all marked tasks:\n" + result;
     }
 }

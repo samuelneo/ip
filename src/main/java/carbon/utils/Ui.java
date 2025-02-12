@@ -21,6 +21,7 @@ public class Ui {
             deadline [description] /by [date/time] - Adds a Deadline task.
             event [description] /from [date/time] to [date/time] - Adds an Event task.
             delete [number] - Deletes task [number].
+            delete marked - Deletes all marked tasks.
             sort - Sorts tasks by their specified date/time.
             """;
 
@@ -64,7 +65,7 @@ public class Ui {
                 case "todo" -> taskList.addTodo(arg);
                 case "deadline" -> taskList.addDeadline(arg);
                 case "event" -> taskList.addEvent(arg);
-                case "delete" -> taskList.deleteTask(Integer.parseInt(arg) - 1);
+                case "delete" -> taskList.delete(arg);
                 case "sort" -> taskList.sortTasks();
                 default -> throw new InvalidCommandException(
                         String.format("The command \"%s\" is not recognised", mostRecentCommand));
