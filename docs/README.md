@@ -9,24 +9,117 @@ It is easy to use and is controlled entirely with text commands.
 
 ## Command summary
 
-| Command                                                | Description                               |
-|--------------------------------------------------------|-------------------------------------------|
-| `help`                                                 | Displays the help message.                |
-| `bye`                                                  | Quits the program.                        |
-| `list`                                                 | Lists all tasks.                          |
-| `find [text]`                                          | Lists all tasks containing `[text]`.      |
-| `mark [number]`                                        | Marks task `[number]` as done.            |
-| `unmark [number]`                                      | Marks task `[number]` as not done.        |
-| `todo [description]`                                   | Adds a Todo task.                         |
-| `deadline [description] /by [date/time]`               | Adds a Deadline task.                     |
-| `event [description] /from [date/time] to [date/time]` | Adds an Event task.                       |
-| `delete [number]`                                      | Deletes task `[number]`.                  |
-| `delete marked`                                        | Deletes all marked tasks.                 |
-| `sort`                                                 | Sorts tasks by their specified date/time. |
+| Command                                                                    | Description                               |
+|----------------------------------------------------------------------------|-------------------------------------------|
+| [`todo [description]`](#adding-a-todo)                                     | Adds a Todo task.                         |
+| [`deadline [description] /by [date/time]`](#adding-a-deadline)             | Adds a Deadline task.                     |
+| [`event [description] /from [date/time] to [date/time]`](#adding-an-event) | Adds an Event task.                       |
+| [`list`](#listing-your-tasks)                                              | Lists all tasks.                          |
+| [`find [text]`](#finding-tasks)                                            | Lists all tasks containing `[text]`.      |
+| [`mark [number]`](#marking-tasks-as-done)                                  | Marks task `[number]` as done.            |
+| [`unmark [number]`](#marking-tasks-as-done)                                | Marks task `[number]` as not done.        |
+| [`delete [number]`](#deleting-tasks)                                       | Deletes task `[number]`.                  |
+| [`delete marked`](#deleting-tasks)                                         | Deletes all marked tasks.                 |
+| [`sort`](#sorting-tasks)                                                   | Sorts tasks by their specified date/time. |
+| [`help`](#displaying-the-help-message)                                     | Displays the help message.                |
+| [`bye`](#closing-the-program)                                              | Quits the program.                        |
 
 ## Commands
 
+### Adding tasks
 
+There are three types of tasks: Todos, Deadlines, and Events.
+
+#### Adding a Todo
+
+A **Todo** is a task with a description and no date/time attached.
+This should be used for tasks that don't have a due date/time or specific timeframe.
+
+The `todo [description]` command adds a Todo with the specified description.
+
+#### Adding a Deadline
+
+A **Deadline** is a task with a description and a due date/time.
+
+The `deadline [description] /by [date/time]` command adds a Deadline with the specified description
+and the specified due date/time. See [Specifying dates and/or times](#specifying-dates-andor-times)
+for more information.
+
+#### Adding an Event
+
+An **Event** is a task with a description, a start date/time, and an end date/time.
+
+The `event [description] /from [date/time] to [date/time]` command adds an Event with the specified
+description, the specified start date/time, and the specified end date/time.
+See [Specifying dates and/or times](#specifying-dates-andor-times) for more information.
+
+#### Specifying dates and/or times
+
+Deadlines and Events have corresponding dates and/or times attached to them.
+A date, time, or datetime may be specified.
+
+* If specifying a date, the format `YYYY-MM-DD` is recommended, though some other formats are accepted too.
+* If specifying a time, the format `HH24:MI` (hour in 24-hour format) is recommended, though some other
+formats are accepted too.
+  * In particular, if the minute portion is `00`, specifying the hour in 12-hour format followed by `am`/`pm`
+is acceptable. For example, `15:00` and `3pm` are both recorded as the same value.
+* If specifying a datetime, the format `YYYY-MM-DD HH24:MI` is recommended. The shortcut above can be used too,
+so a datetime such as `2025-02-13 3pm` is acceptable.
+
+If the text entered cannot be parsed into one of the above categories, a warning will be included in Carbon's
+response message and the date/time will be stored as plain text. Commands such as [`sort`](#sorting-tasks)
+will treat these tasks as if they had no specified date/time.
+
+### Listing your tasks
+
+The `list` command lists all your tasks.
+
+### Finding tasks
+
+The `find [text]` command lists all tasks containing `[text]`.
+
+### Marking tasks as done
+
+The `mark [number]` command marks the task with the corresponding index as done.
+
+For example, to mark task number 2 as done, use `mark 2`.
+
+Similarly, the `unmark [number]` command marks the task with the corresponding index as not done.
+
+### Deleting tasks
+
+The `delete [number]` command deletes the task with the corresponding index.
+
+For example, to delete task number 2, use `delete 2`.
+
+The `delete marked` command deletes **all** tasks that are marked as done.
+
+### Sorting tasks
+
+The `sort` command sorts tasks in chronological order.
+
+For this purpose,
+* A Deadline is compared by its due date/time.
+* An Event is compared by its start date/time.
+* If a Deadline/Event only has a date specified (with no time), the time `00:00` (midnight)
+in combination with the specified date is used for comparison.
+* If a Deadline/Event only has a time specified (with no date), the current date as of running
+the program will be used in combination with the specified time for comparison.
+* Tasks with a specified date/time appear before tasks without.
+  * As a result, Todos appear after any tasks that have a specified date/time.
+  * If a Deadline or Event has their representative date/time stored as plain text, they will be treated
+similarly to a Todo.
+
+### Displaying the help message
+
+The `help` command displays the list of commands, along with their brief descriptions.
+
+### Closing the program
+
+The `bye` command exits the program. Carbon will still remember your tasks,
+and they'll be right there the next time you open the program.
+
+<!-- to delete below -->
 
 ## Adding deadlines
 

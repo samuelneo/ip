@@ -3,7 +3,7 @@ package carbon.task;
 import java.time.LocalDateTime;
 
 /**
- * Todo is a Task with no date/time attached
+ * Todo is a Task with no date/time attached.
  */
 public class Todo extends Task {
     /**
