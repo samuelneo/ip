@@ -2,12 +2,36 @@
 
 ![Screenshot of Carbon GUI](Ui.png)
 
-<!-- Product intro goes here -->
-
 Carbon is an application that keeps track of your tasks.
-It is easy to use and is controlled entirely with text commands.
+It is easy to use, controlled entirely with text commands.
+
+## Getting started
+
+1. Ensure you have **Java 17** or above installed on your system.
+   <details>
+   <summary>Installing Java</summary>
+   
+   * For Windows: Download and run the `.msi` file corresponding to your system architecture
+   [here](https://adoptium.net/temurin/releases/?os=windows&version=17&package=jdk).
+   * For macOS: Download and run the `.pkg` file corresponding to your system architecture
+   [here](https://adoptium.net/temurin/releases/?os=mac&version=17&package=jdk).
+   * For Linux: Download the file corresponding to your system architecture
+   [here](https://adoptium.net/temurin/releases/?os=linux&version=17&package=jdk).
+   You may refer to the [Linux installation guide](https://adoptium.net/installation/linux/).
+   
+   </details>
+2. Download the `.jar` file [here](https://github.com/samuelneo/ip/releases/latest).
+3. Try double-clicking the file. In some cases, this is all that's required to launch the program.
+
+   If the program doesn't launch, follow these steps:
+   * Open a terminal.
+   * Navigate to the folder where `carbon.jar` is located.
+   * Run the following command and the application should launch:\
+     ```java -jar carbon.jar```
 
 ## Command summary
+
+_Commands_ are used to interact with Carbon. The following table is a summary of commands:
 
 | Command                                                                    | Description                               |
 |----------------------------------------------------------------------------|-------------------------------------------|
@@ -36,6 +60,20 @@ A **Todo** is a task with a description and no date/time attached.
 This should be used for tasks that don't have a due date/time or specific timeframe.
 
 The `todo [description]` command adds a Todo with the specified description.
+
+##### _Example:_
+
+```
+todo reply to email
+```
+
+##### _Expected output:_
+
+> ```
+> Added:
+>    [T][ ] reply to email
+> You now have 1 task.
+> ```
 
 #### Adding a Deadline
 
