@@ -172,8 +172,9 @@ find meeting
 
 > [!NOTE]
 > The event found in the above example is labelled as task 3, since it is the third task in the full task list.
-> This index is used (instead of the index as it appears in the results) to ensure consistency. The user can then
-> interact with the task easily (for example, they can follow this command with `mark 3` or `delete 3`).
+> This index is used (instead of the index as it appears in the search results) to ensure consistency.
+> The user can then interact with the task easily (for example, they can follow this command with
+> `mark 3` or `delete 3`).
 
 ### Marking tasks as done
 
@@ -232,7 +233,7 @@ The `delete marked` command deletes **all** tasks that are marked as done.
 
 ##### _Example:_
 
-For this example, let's add a few tasks, mark them as done, and run `delete marked`:
+For this example, let's add a few tasks, mark them as done, then run `delete marked`:
 ```
 todo borrow book
 mark 3
@@ -243,7 +244,7 @@ delete marked
 
 ##### _Expected output:_
 
-The code block below only shows the output for the `delete marked` command.
+The code block below shows only the output for the `delete marked` command.
 > ```
 > Deleted all marked tasks:
 > 3. [T][X] borrow book
