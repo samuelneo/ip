@@ -83,6 +83,20 @@ The `deadline [description] /by [date/time]` command adds a Deadline with the sp
 and the specified due date/time. See [Specifying dates and/or times](#specifying-dates-andor-times)
 for more information.
 
+##### _Example:_
+
+```
+deadline return book /by 2025-02-19 3pm
+```
+
+##### _Expected output:_
+
+> ```
+> Added:
+>    [D][ ] return book (by: 19 Feb 2025 3:00pm)
+> You now have 2 tasks.
+> ```
+
 #### Adding an Event
 
 An **Event** is a task with a description, a start date/time, and an end date/time.
@@ -90,6 +104,18 @@ An **Event** is a task with a description, a start date/time, and an end date/ti
 The `event [description] /from [date/time] to [date/time]` command adds an Event with the specified
 description, the specified start date/time, and the specified end date/time.
 See [Specifying dates and/or times](#specifying-dates-andor-times) for more information.
+
+```
+event project meeting /from 2025-02-16 5pm /to 2025-02-16 6pm
+```
+
+##### _Expected output:_
+
+> ```
+> Added:
+>    [E][ ] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
+> You now have 3 tasks.
+> ```
 
 #### Specifying dates and/or times
 
@@ -112,25 +138,117 @@ will treat these tasks as if they had no specified date/time.
 
 The `list` command lists all your tasks.
 
+##### _Example:_
+
+```
+list
+```
+
+##### _Expected output:_
+
+> ```
+> You have 3 tasks:
+> 1. [T][ ] reply to email
+> 2. [D][ ] return book (by: 19 Feb 2025 3:00pm)
+> 3. [E][ ] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
+> ```
+
 ### Finding tasks
 
 The `find [text]` command lists all tasks containing `[text]`.
+
+##### _Example:_
+
+```
+find meeting
+```
+
+##### _Expected output:_
+
+> ```
+> 1 task contains "meeting":
+> 3. [E][ ] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
+> ```
+
+> [!NOTE]
+> The event found in the above example is labelled as task 3, since it is the third task in the full task list.
+> This index is used (instead of the index as it appears in the results) to ensure consistency. The user can then
+> interact with the task easily (for example, they can follow this command with `mark 3` or `delete 3`).
 
 ### Marking tasks as done
 
 The `mark [number]` command marks the task with the corresponding index as done.
 
-For example, to mark task number 2 as done, use `mark 2`.
+##### _Example:_
+
+```
+mark 3
+```
+
+##### _Expected output:_
+
+> ```
+> Nice! Marked as done:
+>    [E][X] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
+> ```
+
+> [!NOTE]
+> The `[X]` in the task label indicates that the task is marked as done.
 
 Similarly, the `unmark [number]` command marks the task with the corresponding index as not done.
+
+##### _Example:_
+
+```
+unmark 3
+```
+
+##### _Expected output:_
+
+> ```
+> Marked as not done:
+>    [E][ ] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
+> ```
 
 ### Deleting tasks
 
 The `delete [number]` command deletes the task with the corresponding index.
 
-For example, to delete task number 2, use `delete 2`.
+##### _Example:_
+
+```
+delete 1
+```
+
+##### _Expected output:_
+
+> ```
+> Deleted the following task:
+>    [T][ ] reply to email
+> You now have 2 tasks.
+> ```
 
 The `delete marked` command deletes **all** tasks that are marked as done.
+
+##### _Example:_
+
+For this example, let's add a few tasks, mark them as done, and run `delete marked`:
+```
+todo borrow book
+mark 3
+deadline tutorial 3 /by 2025-02-20 9am
+mark 4
+delete marked
+```
+
+##### _Expected output:_
+
+The code block below only shows the output for the `delete marked` command.
+> ```
+> Deleted all marked tasks:
+> 3. [T][X] borrow book
+> 4. [D][X] tutorial 3 (by: 20 Feb 2025 9:00am)
+> ```
 
 ### Sorting tasks
 
@@ -148,6 +266,21 @@ the program will be used in combination with the specified time for comparison.
   * If a Deadline or Event has their representative date/time stored as plain text, they will be treated
 similarly to a Todo.
 
+##### _Example:_
+
+```
+sort
+```
+
+##### _Expected output:_
+
+> ```
+> Tasks sorted!
+> You have 2 tasks:
+> 1. [E][ ] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
+> 2. [D][ ] return book (by: 19 Feb 2025 3:00pm)
+> ```
+
 ### Displaying the help message
 
 The `help` command displays the list of commands, along with their brief descriptions.
@@ -156,28 +289,3 @@ The `help` command displays the list of commands, along with their brief descrip
 
 The `bye` command exits the program. Carbon will still remember your tasks,
 and they'll be right there the next time you open the program.
-
-<!-- to delete below -->
-
-## Adding deadlines
-
-// Describe the action and its outcome.
-
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
-```
-expected output
-```
-
-## Feature ABC
-
-// Feature details
-
-
-## Feature XYZ
-
-// Feature details
