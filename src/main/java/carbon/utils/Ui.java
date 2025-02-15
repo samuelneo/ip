@@ -54,22 +54,7 @@ public class Ui {
         String arg = words.length > 1 ? words[1].trim() : "";
 
         try {
-            return switch (mostRecentCommand) {
-                case "start" -> welcomeMessage;
-                case "help" -> helpMessage;
-                case "bye" -> "Goodbye!";
-                case "list" -> taskList.listTasks();
-                case "find" -> taskList.listTasks(arg);
-                case "mark" -> taskList.markTask(Integer.parseInt(arg) - 1);
-                case "unmark" -> taskList.unmarkTask(Integer.parseInt(arg) - 1);
-                case "todo" -> taskList.addTodo(arg);
-                case "deadline" -> taskList.addDeadline(arg);
-                case "event" -> taskList.addEvent(arg);
-                case "delete" -> taskList.delete(arg);
-                case "sort" -> taskList.sortTasks();
-                default -> throw new InvalidCommandException(
-                        String.format("The command \"%s\" is not recognised", mostRecentCommand));
-            };
+            return processMessage(arg);
         } catch (InvalidCommandException | InvalidArgumentException e) {
             assert !e.getMessage().isBlank() : "Exception should have a message";
             return formatError(e.getMessage());
@@ -81,6 +66,25 @@ public class Ui {
                     : "Tasks are numbered from 1 to " + taskList.size();
             return formatError(message);
         }
+    }
+
+    private String processMessage(String arg) {
+        return switch (mostRecentCommand) {
+            case "start" -> welcomeMessage;
+            case "help" -> helpMessage;
+            case "bye" -> "Goodbye!";
+            case "list" -> taskList.listTasks();
+            case "find" -> taskList.listTasks(arg);
+            case "mark" -> taskList.markTask(Integer.parseInt(arg) - 1);
+            case "unmark" -> taskList.unmarkTask(Integer.parseInt(arg) - 1);
+            case "todo" -> taskList.addTodo(arg);
+            case "deadline" -> taskList.addDeadline(arg);
+            case "event" -> taskList.addEvent(arg);
+            case "delete" -> taskList.delete(arg);
+            case "sort" -> taskList.sortTasks();
+            default -> throw new InvalidCommandException(
+                    String.format("The command \"%s\" is not recognised", mostRecentCommand));
+        };
     }
 
     /**

@@ -61,48 +61,64 @@ public class Storage {
         String message = "";
 
         try {
-            Scanner scanner = new Scanner(dataFile);
-            while (scanner.hasNextLine()) {
-                String firstLine = scanner.nextLine();
-                if (firstLine.isEmpty()) {
-                    break;
-                }
-
-                char type = firstLine.charAt(0);
-                boolean isDone = scanner.nextLine().charAt(0) == '1';
-                String description = scanner.nextLine().trim();
-
-                Task task = switch (type) {
-                    case 'T' -> new Todo(description);
-                    case 'D' -> {
-                        String dueBy = scanner.nextLine().trim();
-                        yield new Deadline(description, dueBy);
-                    }
-                    case 'E' -> {
-                        String from = scanner.nextLine().trim();
-                        String to = scanner.nextLine().trim();
-                        yield new Event(description, from, to);
-                    }
-                    default -> throw new InvalidFileFormatException();
-                };
-
-                if (isDone) {
-                    task.markAsDone();
-                }
-                taskList.add(task);
-            }
+            readTasks(taskList, dataFile);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IndexOutOfBoundsException | NoSuchElementException | InvalidFileFormatException e) {
             message = "The data file was corrupted. Its contents are ignored and will be reset.\n";
-            taskList.clear();
-            try {
-                // Clear tasks.txt contents
-                new FileWriter(TASKS_FILE_PATH).close();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            clearTasks(taskList);
         }
         return message;
+    }
+
+    private static void readTasks(TaskList taskList, File dataFile) throws FileNotFoundException {
+        Scanner scanner = new Scanner(dataFile);
+        while (scanner.hasNextLine()) {
+            Task task = nextTask(scanner);
+            if (task == null) {
+                break;
+            }
+            taskList.add(task);
+        }
+    }
+
+    private static Task nextTask(Scanner scanner) {
+        String firstLine = scanner.nextLine();
+        if (firstLine.isEmpty()) {
+            return null;
+        }
+
+        char type = firstLine.charAt(0);
+        boolean isDone = scanner.nextLine().charAt(0) == '1';
+        String description = scanner.nextLine().trim();
+
+        Task task = switch (type) {
+            case 'T' -> new Todo(description);
+            case 'D' -> {
+                String dueBy = scanner.nextLine().trim();
+                yield new Deadline(description, dueBy);
+            }
+            case 'E' -> {
+                String from = scanner.nextLine().trim();
+                String to = scanner.nextLine().trim();
+                yield new Event(description, from, to);
+            }
+            default -> throw new InvalidFileFormatException();
+        };
+
+        if (isDone) {
+            task.markAsDone();
+        }
+        return task;
+    }
+
+    private static void clearTasks(TaskList taskList) {
+        taskList.clear();
+        try {
+            // Clear tasks.txt contents
+            new FileWriter(TASKS_FILE_PATH).close();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

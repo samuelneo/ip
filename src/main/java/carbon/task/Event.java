@@ -28,9 +28,6 @@ public class Event extends Task {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getStorageText() {
         return super.getStorageText() + "\n" + start + "\n" + end;
     }

@@ -62,19 +62,15 @@ public class TaskList {
             return NO_TASKS_MESSAGE;
         }
 
-        return IntStream.range(0, tasks.size())
+        List<String> results = IntStream.range(0, tasks.size())
                 .filter(i -> tasks.get(i).toString().toLowerCase().contains(filter.toLowerCase()))
                 .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
-                .collect(Collectors.collectingAndThen(
-                        Collectors.toList(),
-                        results -> results.isEmpty()
-                                ? String.format("You don't have any tasks that contain \"%s\".", filter)
-                                : String.format("%d task%s contain%s \"%s\":\n",
-                                results.size(),
-                                results.size() != 1 ? "s" : "",
-                                results.size() == 1 ? "s" : "",
-                                filter) + String.join("\n", results)
-                ));
+                .toList();
+        boolean isPlural = results.size() != 1;
+        return results.isEmpty()
+                ? String.format("You don't have any tasks that contain \"%s\".", filter)
+                : String.format("%d task%s contain%s \"%s\":\n", results.size(), isPlural ? "s" : "",
+                isPlural ? "" : "s", filter) + String.join("\n", results);
     }
 
     /**

@@ -30,9 +30,6 @@ public class Deadline extends Task {
         return dueBy;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getStorageText() {
         return super.getStorageText() + "\n" + dueBy;
     }
