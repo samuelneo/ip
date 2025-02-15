@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -37,7 +38,8 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        // Allows the user to scroll without first clicking on the scrollbar
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> scrollPane.vvalueProperty().unbind());
     }
 
     /**
@@ -68,5 +70,8 @@ public class MainWindow extends AnchorPane {
         if (command.equals("bye")) {
             Platform.exit();
         }
+
+        // Scroll to bottom
+        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 }
