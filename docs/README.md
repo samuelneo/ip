@@ -21,20 +21,20 @@ It is easy to use, controlled entirely with text commands.
 
 _Commands_ are used to interact with Carbon. The following table is a summary of commands:
 
-| Command                                                                    | Description                               |
-|----------------------------------------------------------------------------|-------------------------------------------|
-| [`todo [description]`](#adding-a-todo)                                     | Adds a Todo task.                         |
-| [`deadline [description] /by [date/time]`](#adding-a-deadline)             | Adds a Deadline task.                     |
-| [`event [description] /from [date/time] to [date/time]`](#adding-an-event) | Adds an Event task.                       |
-| [`list`](#listing-your-tasks)                                              | Lists all tasks.                          |
-| [`find [text]`](#finding-tasks)                                            | Lists all tasks containing `[text]`.      |
-| [`mark [number]`](#marking-tasks-as-done)                                  | Marks task `[number]` as done.            |
-| [`unmark [number]`](#marking-tasks-as-done)                                | Marks task `[number]` as not done.        |
-| [`delete [number]`](#deleting-tasks)                                       | Deletes task `[number]`.                  |
-| [`delete marked`](#deleting-tasks)                                         | Deletes all marked tasks.                 |
-| [`sort`](#sorting-tasks)                                                   | Sorts tasks by their specified date/time. |
-| [`help`](#displaying-the-help-message)                                     | Displays the help message.                |
-| [`bye`](#closing-the-program)                                              | Quits the program.                        |
+| Command                                                                     | Description                               |
+|-----------------------------------------------------------------------------|-------------------------------------------|
+| [`todo [description]`](#adding-a-todo)                                      | Adds a Todo task.                         |
+| [`deadline [description] /by [date/time]`](#adding-a-deadline)              | Adds a Deadline task.                     |
+| [`event [description] /from [date/time] /to [date/time]`](#adding-an-event) | Adds an Event task.                       |
+| [`list`](#listing-your-tasks)                                               | Lists all tasks.                          |
+| [`find [text]`](#finding-tasks)                                             | Lists all tasks containing `[text]`.      |
+| [`mark [number]`](#marking-tasks-as-done)                                   | Marks task `[number]` as done.            |
+| [`unmark [number]`](#marking-tasks-as-done)                                 | Marks task `[number]` as not done.        |
+| [`delete [number]`](#deleting-tasks)                                        | Deletes task `[number]`.                  |
+| [`delete marked`](#deleting-tasks)                                          | Deletes all marked tasks.                 |
+| [`sort`](#sorting-tasks)                                                    | Sorts tasks by their specified date/time. |
+| [`help`](#displaying-the-help-message)                                      | Displays the help message.                |
+| [`bye`](#closing-the-program)                                               | Quits the program.                        |
 
 ## Commands
 
@@ -89,7 +89,7 @@ deadline return book /by 2025-02-19 3pm
 
 An **Event** is a task with a description, a start date/time, and an end date/time.
 
-The `event [description] /from [date/time] to [date/time]` command adds an Event with the specified
+The `event [description] /from [date/time] /to [date/time]` command adds an Event with the specified
 description, the specified start date/time, and the specified end date/time.
 See [Specifying dates and/or times](#specifying-dates-andor-times) for more information.
 
