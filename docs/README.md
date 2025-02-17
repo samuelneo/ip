@@ -8,6 +8,18 @@ It is easy to use, controlled entirely with text commands.
 ## Getting started
 
 1. Ensure you have **Java 17** or above installed on your system.
+   <details>
+   <summary>Installing Java</summary>
+
+    * For Windows: Download and run the `.msi` file corresponding to your system architecture
+      [here](https://adoptium.net/temurin/releases/?os=windows&version=17&package=jdk).
+    * For macOS: Download and run the `.pkg` file corresponding to your system architecture
+      [here](https://adoptium.net/temurin/releases/?os=mac&version=17&package=jdk).
+    * For Linux: Download the file corresponding to your system architecture
+      [here](https://adoptium.net/temurin/releases/?os=linux&version=17&package=jdk).
+      You may refer to the [Linux installation guide](https://adoptium.net/installation/linux/).
+
+   </details>
 2. Download the `.jar` file [here](https://github.com/samuelneo/ip/releases/latest).
 3. Try double-clicking the file. In some cases, this is all that's required to launch the program.
 
@@ -158,11 +170,11 @@ find meeting
 > 3. [E][ ] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
 > ```
 
-**Note:**
-The event found in the above example is labelled as task 3, since it is the third task in the full task list.
-This index is used (instead of the index as it appears in the search results) to ensure consistency.
-The user can then interact with the task easily (for example, they can follow this command with
-`mark 3` or `delete 3`).
+> [!NOTE]
+> The event found in the above example is labelled as task 3, since it is the third task in the full task list.
+> This index is used (instead of the index as it appears in the search results) to ensure consistency.
+> The user can then interact with the task easily (for example, they can follow this command with
+> `mark 3` or `delete 3`).
 
 ### Marking tasks as done
 
@@ -181,7 +193,8 @@ mark 3
 >    [E][X] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
 > ```
 
-**Note:** The `[X]` in the task label indicates that the task is marked as done.
+> [!NOTE]
+> The `[X]` in the task label indicates that the task is marked as done.
 
 Similarly, the `unmark [number]` command marks the task with the corresponding index as not done.
 
