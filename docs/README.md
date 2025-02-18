@@ -170,11 +170,11 @@ find meeting
 > 3. [E][ ] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
 > ```
 
-> [!NOTE]
-> The event found in the above example is labelled as task 3, since it is the third task in the full task list.
-> This index is used (instead of the index as it appears in the search results) to ensure consistency.
-> The user can then interact with the task easily (for example, they can follow this command with
-> `mark 3` or `delete 3`).
+**Note:**
+The event found in the above example is labelled as task 3, since it is the third task in the full task list.
+This index is used (instead of the index as it appears in the search results) to ensure consistency.
+The user can then interact with the task easily (for example, they can follow this command with
+`mark 3` or `delete 3`).
 
 ### Marking tasks as done
 
@@ -193,8 +193,7 @@ mark 3
 >    [E][X] project meeting (from: 16 Feb 2025 5:00pm, to: 16 Feb 2025 6:00pm)
 > ```
 
-> [!NOTE]
-> The `[X]` in the task label indicates that the task is marked as done.
+**Note:** The `[X]` in the task label indicates that the task is marked as done.
 
 Similarly, the `unmark [number]` command marks the task with the corresponding index as not done.
 
