@@ -21,13 +21,12 @@ It is easy to use, controlled entirely with text commands.
 
    </details>
 2. Download the `.jar` file [here](https://github.com/samuelneo/ip/releases/latest).
-3. Try double-clicking the file. In some cases, this is all that's required to launch the program.
-
-   If the program doesn't launch, follow these steps:
-   * Open a terminal.
-   * Navigate to the folder where `carbon.jar` is located.
-   * Run the following command and the application should launch:\
-     ```java -jar carbon.jar```
+3. Open a terminal.
+4. Navigate to the folder where `carbon.jar` is located.
+5. Run the following command and the application should launch:
+   ```
+   java -jar carbon.jar
+   ```
 
 ## Command summary
 
